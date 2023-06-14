@@ -1,0 +1,18 @@
+{
+    "property-name": "Property Name",
+    "property-value": "Property Value",
+    "property-key": "Property Key",
+    "institution-name": "Institution",
+    "add-global-property-button": "Add Global Property",
+    "submit-button": "Submit",
+    "cancel-button": "cancel",
+    "property-key-option": "Choose Property Key",
+    "institution-name-option": "Choose Institution",
+    "property-name-option": "Choose Property Name",
+    "name-column": "Name",
+    "key-column": "Key",
+    "value-column": "Value",
+    "institution-column": "Institution",
+    "actions-column": "Actions"
+    
+}

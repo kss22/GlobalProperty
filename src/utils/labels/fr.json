@@ -1,0 +1,17 @@
+{
+    "property-name": "Nom de la propriété",
+    "property-value": "Valeur de la propriété",
+    "property-key": "Clé de propriété",
+    "institution-name": "Institution",
+    "add-global-property-button": "Ajouter une propriété globale",
+    "submit-button" : "Soumettre",
+    "cancel-button": "annuler",
+    "property-key-option": "Choisissez la clé de propriété",
+    "institution-name-option": "Choisissez l'établissement",
+    "property-name-option": "Choisissez le nom de la propriété",
+    "name-column": "Nom",
+    "key-column": "Clé",
+    "value-column": "Valeur",
+    "institution-column": "Institution",
+    "actions-column": "Actions"
+}
