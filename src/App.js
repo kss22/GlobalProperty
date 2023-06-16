@@ -7,6 +7,8 @@ import enLabels from './utils/labels/en.json';
 import frLabels from './utils/labels/fr.json';
 import { getLanguage } from "./localStorage";
 import Authorization from "./utils/authorization";
+import AddEcomLayout from "./pages/ecomAddLayout";
+import ListEcomLayout from "./pages/ecomListLayout";
 
 function App() {
 
@@ -29,6 +31,8 @@ function App() {
             path="/addGlobalProperty/:propId?"
             element={<IntlProvider locale={locale} messages={labels}><GlobalPropertyScreen /></IntlProvider>}
           />
+          <Route path="/listEcomLayout" element={<IntlProvider locale={locale} messages={labels}><ListEcomLayout/></IntlProvider>}/>
+          <Route path="/addEcomLayout/:ecomLayoutId?" element={<IntlProvider locale={locale} messages={labels}><AddEcomLayout/></IntlProvider>}/>
         </Routes>
       </BrowserRouter>
     

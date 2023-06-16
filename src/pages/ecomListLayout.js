@@ -1,23 +1,22 @@
-import React from "react";
-import { FaPlus } from "react-icons/fa";
-import "../App.css";
-import GlobalPropertiesTable from "../components/globalPropertiesDataTable";
-import { saveLanguage } from "../localStorage";
-import { FormattedMessage } from "react-intl";
 import { Button, Tooltip } from "@mui/material";
+import { saveLanguage } from "../localStorage";
+import { FaPlus } from "react-icons/fa";
+import { FormattedMessage } from "react-intl";
+import EcomLayoutsTable from "../components/ecomLayoutDataTable";
 
-const GlobalPropertiesScreen = () => {
-  
-  return (
-    <div className="MainContainer">
-      <Tooltip title="Go to ecom">
+const ListEcomLayout  = ()=>{
+
+    return(
+        <div className="MainContainer">
+
+<Tooltip title="Go to Global Properties">
           <Button
             onClick={() => {
-              window.location.href="/listEcomLayout";
+              window.location.href="/listGlobalProperties";
             }}
             variant="text"
           >
-            Ecom
+            GlobalProperties
           </Button>
           </Tooltip>
           <Tooltip title="French">
@@ -42,22 +41,23 @@ const GlobalPropertiesScreen = () => {
             En
           </Button>
           </Tooltip>
-      <div>
+          <div>
         <div className="Header">
-          <h2>Global Properties</h2>
+        <h2><FormattedMessage id="ecom-header" defaultMessage="New Ecom Layout"/></h2>
+          <h5><FormattedMessage id="ecom-list-sub-header" defaultMessage="Manage Ecom Layouts"/></h5>
           
         </div>
         <div className="link-wrapper">
-          <Tooltip title="Add new global property" placement="top">
+          <Tooltip title="Add new ecom layout" placement="top">
           <Button
             className="link"
-            onClick={() => (window.location.href = "/addGlobalProperty")}
+            onClick={() => (window.location.href = "/addEcomLayout")}
             variant="text"
             startIcon={<FaPlus />}
           >
             <FormattedMessage
-              id="add-global-property-button"
-              defaultMessage="Add Global Property"
+              id="add-ecom-layout-button"
+              defaultMessage="Add Ecom Layout"
             />
           </Button>
           </Tooltip>
@@ -65,10 +65,11 @@ const GlobalPropertiesScreen = () => {
         </div>
       </div>
       <div className="Table">
-        <GlobalPropertiesTable />
+        <EcomLayoutsTable />
       </div>
-    </div>
-  );
-};
 
-export default GlobalPropertiesScreen;
+        </div>
+    )
+}
+
+export default ListEcomLayout;

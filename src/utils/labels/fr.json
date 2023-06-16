@@ -13,5 +13,15 @@
     "key-column": "Clé",
     "value-column": "Valeur",
     "institution-column": "Institution",
-    "actions-column": "Actions"
+    "actions-column": "Actions",
+    "add-ecom-layout-button": "Ajouter une mise en page Ecom",
+    "ecom-layout-name-label": "Nom de la mise en page:",
+    "ecom-layout-type-label": "Type de mise en page:",
+    "ecom-element-label": "Élément ecom",
+    "ecom-header": "Nouvelle mise en page Ecom",
+    "ecom-sub-header": "Ajouter une nouvelle mise en page de style Ecom",
+    "ecom-list-sub-header": "Gérer les mises en page Ecom",
+    "select-element-to-add-label": "Sélectionnez l'élément à ajouter",
+    "edit-layout-label": "Modifier la mise en page",
+    "no-rows-to-show-label": "Aucune ligne à afficher"
 }

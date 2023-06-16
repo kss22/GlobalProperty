@@ -13,7 +13,17 @@
     "key-column": "Key",
     "value-column": "Value",
     "institution-column": "Institution",
-    "actions-column": "Actions"
+    "actions-column": "Actions",
+    "add-ecom-layout-button": "Add Ecom Layout",
+    "ecom-layout-name-label": "Layout Name:",
+    "ecom-layout-type-label": "Layout Type:",
+    "ecom-element-label": "Ecom Element",
+    "ecom-header": "New Ecom Layout",
+    "ecom-sub-header": "Add New Ecom Style Layout",
+    "ecom-list-sub-header": "Manage Ecom Layouts",
+    "select-element-to-add-label": "Select Element To Add",
+    "edit-layout-label": "Edit Layout",
+    "no-rows-to-show-label": "No Rows To Show"
     
     
 }
