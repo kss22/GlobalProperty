@@ -1,13 +1,22 @@
 import React from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { FaSave } from "react-icons/fa";
 import * as authentication from "../utils/authentication";
 import validations from "../utils/validations";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { FormattedMessage } from 'react-intl';
-
+import { FormattedMessage } from "react-intl";
+import {
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  Tooltip,
+} from "@mui/material";
+import Loading from "./loading";
 
 const GlobalPropertiesForm = () => {
   const { propId } = useParams();
@@ -29,11 +38,9 @@ const GlobalPropertiesForm = () => {
   const [instId, setInstId] = useState(0);
 
   const [validationError, setValidationError] = useState(false);
-
+  const [validationMessage, setValidationMessage] = useState('');
   const handleChangePropValue = (e) => {
-
     setValidationError(false);
-    
 
     const value = e.target.value;
 
@@ -45,7 +52,7 @@ const GlobalPropertiesForm = () => {
       })
       .catch((error) => {
         setValidationError(true);
-        toast.error(`Validation error: ${error.message}`);
+        setValidationMessage(error.message);
       });
   };
 
@@ -87,7 +94,7 @@ const GlobalPropertiesForm = () => {
     })
       .then((response) => {
         if (response.ok) {
-          toast.success('Property added successfully', {
+          toast.success("Property added successfully", {
             position: "top-center",
             autoClose: 5000,
             hideProgressBar: false,
@@ -95,15 +102,26 @@ const GlobalPropertiesForm = () => {
             pauseOnHover: true,
             progress: undefined,
           });
-          
-        } else {
-          console.log(response);
-          throw new Error(response);
-          
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (data.errors !== null) {
+          const lengthOfErrors = data.errors.length;
+          for (let i = 0; i < lengthOfErrors; i++) {
+            toast.error(data.errors[i], {
+              position: "top-center",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              progress: undefined,
+            });
+          }
         }
       })
-      .catch((error) => {
-        toast.error(error.message, {
+      .catch((err) => {
+        toast.error(err, {
           position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
@@ -197,77 +215,156 @@ const GlobalPropertiesForm = () => {
     <div>
       <ToastContainer />
       {loading ? (
-        <div className="loading-message">Loading...</div>
+        <Loading/>
       ) : (
         <div className="divContainer">
           <div className="Entries">
-            <label><FormattedMessage  id="property-name" defaultMessage='Property Name:'/></label>
-            <select
-              value={prop}
-              onChange={(e) => {
-                setProp(e.target.value);
-                handleChange(e);
-              }}
-            >
+            
+          <div className="left-container">
+
+          <label className="required">
+              <FormattedMessage
+                id="property-name"
+                defaultMessage="Property Name:"
+              />
+            </label>
+            <FormControl sx={{ m: 1, minWidth: 250 }} size="small">
               {propId ? (
-                <option>{property.propName}</option>
+                <InputLabel id="select-prop-name">
+                  {property.propName}
+                </InputLabel>
               ) : (
-                <option><FormattedMessage id="property-name-option" defaultMessage="Choose Property Name"/></option>
+                <InputLabel id="select-prop-name">
+                  <FormattedMessage
+                    id="property-name-option"
+                    defaultMessage="Choose Property Name"
+                  />
+                </InputLabel>
               )}
 
-              {data.map((item) => (
-                <option value={item}>{item}</option>
-              ))}
-            </select>
+              <Select
+                labelId="select-prop-name"
+                
+                value={prop}
+                label="Property Name"
+                onChange={(e) => {
+                  setProp(e.target.value);
+                  handleChange(e);
+                }}
+              >
+                {data.map((item) => (
+                  <MenuItem value={item}>{item}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
 
-            <span>
-            <label><FormattedMessage className='format' id="property-value" defaultMessage='Property Value:'/></label>
-              <input
-                maxLength={100}
-                value={propId ? propValue : null}
+            <label className="required" >
+              <FormattedMessage
+                className="format"
+                id="property-key"
+                defaultMessage="Property Key:"
+              />
+            </label>
+            <FormControl sx={{ m: 1, minWidth: 250 }} size="small">
+              {propId ? (
+                <InputLabel id="select-prop-key">
+                  {property.propKey}
+                </InputLabel>
+              ) : (
+                <InputLabel id="select-prop-key">
+                  <FormattedMessage
+                    id="property-key-option"
+                    defaultMessage="Choose Property Key"
+                  />
+                </InputLabel>
+              )}
+
+              <Select
+                labelId="select-prop-key"
+                value={propKey}
+                label="Property Key"
+                onChange={(e) => {
+                  setPropKey(e.target.value);
+                }}
+              >
+                {keys.map((item) => (
+                  <MenuItem value={item}>{item}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </div>
+          <div className="right-container">
+
+          <label className="required">
+                <FormattedMessage
+                  className="format"
+                  id="property-value"
+                  defaultMessage="Property Value:"
+                />
+              </label>
+              <TextField
+                variant="outlined"
+                label="Enter Property Value"
                 type="text"
-                placeholder={"Enter Property Value"}
-                className={validationError ? "invalid" : "valid"}
+                size="small"
+                inputProps={{
+                  maxLength: 100,
+                }}
+                className="MuiTextField-root"
+                error={validationError}
+                helperText={validationMessage}
+                value={propId ? propValue : null}
                 onChange={handleChangePropValue}
               />
-              <br></br>
-            </span>
-            <label><FormattedMessage className='format' id="property-key" defaultMessage='Property Key:'/></label>
-            <select
-              value={propKey}
-              onChange={(e) => {
-                setPropKey(e.target.value);
-              }}
-            >
+            
+            
+            <label className="required">
+              <FormattedMessage
+                className="format"
+                id="institution-name"
+                defaultMessage="Institution:"
+              />
+            </label>
+
+            <FormControl sx={{ m: 1, minWidth: 250 }} size="small">
               {propId ? (
-                <option>{property.propKey}</option>
+                <InputLabel id="select-institution">
+                  {property.instName}
+                </InputLabel>
               ) : (
-                <option><FormattedMessage id="property-key-option" defaultMessage="Choose Property Key"/></option>
+                <InputLabel id="select-institution">
+                  <FormattedMessage
+                    id="institution-name-option"
+                    defaultMessage="Choose Institution"
+                  />
+                </InputLabel>
               )}
 
-              {keys.map((item) => (
-                <option value={item}>{item}</option>
-              ))}
-            </select>
-            <label><FormattedMessage className='format' id="institution-name" defaultMessage='Institution:'/></label>
-            <select onChange={(e) => setInstId(e.target.value)}>
-              {propId ? (
-                <option>{property.instName}</option>
-              ) : (
-                <option><FormattedMessage id="institution-name-option" defaultMessage="Choose Institution"/></option>
-              )}
+              <Select
+                labelId="select-institution"
+                
+                label="Institution"
+                onChange={(e) => setInstId(e.target.value)}
+              >
+                {inst.map((item) => (
+                  <MenuItem value={item.instId}>{item.instName}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
 
-              {inst.map((item) => (
-                <option value={item.instId}>{item.instName}</option>
-              ))}
-            </select>
+
+          </div>
+              
+            
           </div>
           <div className="Submissions">
-            <Link to="/"><FormattedMessage id="cancel-button" defaultMessage='cancel'/></Link>
-            <button onClick={() => handleSubmit()}>
-              <FaSave className="save" />
-              <FormattedMessage id="submit-button" defaultMessage='Submit'/>
-            </button>
+            <Tooltip title="Cancel Creation">
+            <Button variant="text" onClick={()=>window.location.href = "/listGlobalProperties"}><FormattedMessage id="cancel-button" defaultMessage="cancel" /></Button>
+            </Tooltip>
+            <Tooltip title="Create property">
+            <Button variant="contained" onClick={() => handleSubmit()} endIcon={<FaSave className="save" />}> <FormattedMessage id="submit-button" defaultMessage="Submit" /> </Button>
+            </Tooltip>
+            
           </div>
         </div>
       )}

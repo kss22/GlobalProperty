@@ -6,6 +6,7 @@ import { IntlProvider } from "react-intl";
 import enLabels from './utils/labels/en.json';
 import frLabels from './utils/labels/fr.json';
 import { getLanguage } from "./localStorage";
+import Authorization from "./utils/authorization";
 
 function App() {
 
@@ -22,7 +23,8 @@ function App() {
     
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<IntlProvider locale={locale} messages={labels}><GlobalPropertiesScreen /></IntlProvider>} />
+          <Route path="/" element={<Authorization/>}/>
+          <Route path="/listGlobalProperties" element={<IntlProvider locale={locale} messages={labels}><GlobalPropertiesScreen /></IntlProvider>} />
           <Route
             path="/addGlobalProperty/:propId?"
             element={<IntlProvider locale={locale} messages={labels}><GlobalPropertyScreen /></IntlProvider>}

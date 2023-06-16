@@ -1,8 +1,8 @@
 {
-    "property-name": "Nom de la propriété",
-    "property-value": "Valeur de la propriété",
-    "property-key": "Clé de propriété",
-    "institution-name": "Institution",
+    "property-name": "Nom de la propriété:",
+    "property-value": "Valeur de la propriété:",
+    "property-key": "Clé de propriété:",
+    "institution-name": "Institution:",
     "add-global-property-button": "Ajouter une propriété globale",
     "submit-button" : "Soumettre",
     "cancel-button": "annuler",

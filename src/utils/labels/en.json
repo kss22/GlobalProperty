@@ -1,8 +1,8 @@
 {
-    "property-name": "Property Name",
-    "property-value": "Property Value",
-    "property-key": "Property Key",
-    "institution-name": "Institution",
+    "property-name": "Property Name:",
+    "property-value": "Property Value:",
+    "property-key": "Property Key:",
+    "institution-name": "Institution:",
     "add-global-property-button": "Add Global Property",
     "submit-button": "Submit",
     "cancel-button": "cancel",
@@ -14,5 +14,6 @@
     "value-column": "Value",
     "institution-column": "Institution",
     "actions-column": "Actions"
+    
     
 }
