@@ -23,5 +23,6 @@
     "ecom-list-sub-header": "Gérer les mises en page Ecom",
     "select-element-to-add-label": "Sélectionnez l'élément à ajouter",
     "edit-layout-label": "Modifier la mise en page",
-    "no-rows-to-show-label": "Aucune ligne à afficher"
+    "no-rows-to-show-label": "Aucune ligne à afficher",
+    "padding-type-option": "Choisissez le type de rembourrage"
 }

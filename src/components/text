@@ -1,0 +1,37 @@
+•	CFG-0354: Invalid ecommerce layout id 
+o	In case of update, if the ecom layout is not a numeric value between 0 and 9999.
+o	In case of update, if the ecom layout id is not a valid id in table MD_CFG_ECOM_LAYOUT field ECOM_LAYOUT_ID for the institution id sent in the request header.
+
+•	CFG-0355: Invalid ecom layout name
+o	If the ecom layout name is empty
+o	If the ecom layout name is of length greater than 100
+o	If the ecom layout name is not an alphanumeric string. The allowed special characters are “_” and “-“.
+•	CFG-0372: Invalid ecom type 
+o	If the ecom type is empty
+o	If the ecom type is not 0 or 1
+•	CFG-0356: Invalid ecom layout element id 
+o	If the element id is not a numeric value between 0 and 9999
+•	CFG-0357: Invalid element length
+o	If the element’s length is not a numeric value between 0 and 999
+•	CFG-0316: Invalid element padding type
+o	If the element’s padding type is not 1 for right or 2 for left.
+•	CFG-0317: Invalid element padding value 
+o	If the element’s padding value is of length greater than 100
+o	If the element’s padding value is not an alphanumeric string. The allowed special characters are “.”, “_”, “,”, “-“. 	
+•	CFG-0358: Invalid element order
+o	If the elements order is not a numeric value between 0 and 999.
+•	CFG-0371: Invalid element parent id
+o	If the parent element id is not an integer between 0 and 9999.
+•	CFG-0004: Invalid branch
+o	If the branch id sent in the request header is not a valid branch in table MD_CFG_BRANCH field BRANCH_ID. 
+•	VAL-0024: Invalid elements order 
+o	If the same order was repeated multiple times in the request
+o	If a specific order was skipped or missing
+•	CFG-0355: Ecommerce layout name already exists
+o	If the ecom layout’s name sent in the request already exists in table MD_CFG_ECOM_LAYOUT field LAYOUT_NAME, for the institution id sent in the request header.
+•	CFG-0354: Invalid ecom layout id 
+o	In case of update, if the ecom layout id is not a valid id in table MD_CFG_ECOM_LAYOUT field ECOM_LAYOUT_ID for the institution id sent in the request header. 
+•	CFG-0356: Invalid ecom element id
+o	If the element’s id is not a valid id in table MD_CFG_ECOM_ELEMENT field ECOM_ELEMENT_ID. 
+•	CFG-0371: Invalid ecom parent element id
+o	If the element’s id is not a valid id in table MD_CFG_ECOM_ELEMENT field ECOM_ELEMENT_ID

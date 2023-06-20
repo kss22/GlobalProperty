@@ -110,6 +110,9 @@ const GlobalPropertiesForm = () => {
             pauseOnHover: true,
             progress: undefined,
           });
+          setTimeout(() => {
+            window.location.href = '/listEcomLayout';
+          }, 5000);
         } else if (response.status === 401) {
           setFailed(true);
         }

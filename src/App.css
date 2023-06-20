@@ -83,7 +83,7 @@ body{
 .custom-table button{
   border: none;
   
-  color: red;
+  color: #ff0000;
 }
 
 .custom-table button:hover{
@@ -93,7 +93,7 @@ body{
 .custom-table .edit-button{
   border: none;
   
-  color: blue;
+  color: #0000ff;
 }
 
 .pagination {

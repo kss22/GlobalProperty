@@ -1,7 +1,11 @@
 import {
   Button,
   Divider,
+  FormControl,
+  InputLabel,
+  MenuItem,
   Paper,
+  Select,
   TextField,
   Tooltip,
   Typography,
@@ -10,17 +14,13 @@ import { useEffect, useState } from "react";
 import * as authentication from "../utils/authentication";
 import { useParams } from "react-router-dom";
 import { FormattedMessage } from "react-intl";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import Checkbox from "@mui/material/Checkbox";
 import { FaSave } from "react-icons/fa";
-import DragHandleIcon from "@mui/icons-material/DragHandle";
 import Loading from "./loading";
 import Failed from "./failedComponent";
-
+import { ToastContainer, toast } from "react-toastify";
+import ElementList from "./ecomElementsList";
+import EcomDisplayElementList from "./ecomDisplayElementList";
+import validations from "../utils/validations";
 
 const EcomLayoutForm = () => {
   const { ecomLayoutId } = useParams();
@@ -32,18 +32,152 @@ const EcomLayoutForm = () => {
   const [failed, setFailed] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  const [nameValidationError, setNameValidationError] = useState(false);
+  const [nameValidationMessage, setNameValidationMessage] = useState("");
+
+  var numberOfObjectsNeeded = ecomElementsByUser.length;
+
+  const handleChangeLayoutName = (e) => {
+    setNameValidationError(false);
+
+    const value = e.target.value;
+
+    validations.ecomLayoutName
+      .validate(value)
+      .then(() => {
+        setLayoutName(value);
+        setNameValidationError(false);
+        setNameValidationMessage(null);
+      })
+      .catch((error) => {
+        setNameValidationError(true);
+        setNameValidationMessage(error.message);
+
+        if (error.message === "Ecom Layout Name is required") {
+          setLayoutName(value);
+        }
+      });
+  };
+
+  const layoutTypeMap = {
+    XML: 1,
+    EXCEL: 2,
+    TXT: 3,
+    CSV: 4,
+  };
+
+  function getKeyFromValue(value, map) {
+    for (const [key, val] of Object.entries(map)) {
+      if (val === value) {
+        return key;
+      }
+    }
+    return null;
+  }
+
   const handleToggle = (value) => () => {
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
 
     if (currentIndex === -1) {
       newChecked.push(value);
+      ecomElementsByUser.push({
+        ecomDetailId: 0,
+        ecomElement: ecomElements.find((item) => item.ecomElementId === value),
+        ecomElementOrder: 0,
+        ecomLayoutId: 0,
+        elementLength: "",
+        elementPaddingType: "",
+        elementPaddingValue: "",
+      });
     } else {
       newChecked.splice(currentIndex, 1);
+      setEcomElementsByUser((prevEcomElementsByUser) =>
+        prevEcomElementsByUser.filter(
+          (item) => item.ecomElement.ecomElementId !== value
+        )
+      );
     }
 
     setChecked(newChecked);
   };
+
+  function handleSubmit() {
+    let post = {
+      ecomDetails: [],
+      ecomLayoutId: ecomLayoutId ? ecomLayoutId : 0,
+      layoutName: layoutName,
+      layoutType: layoutType,
+    };
+
+    for (let i = 0; i < numberOfObjectsNeeded; i++) {
+      let ecomDetailsJson = {
+        ecomElementId: ecomElementsByUser[i].ecomElement.ecomElementId,
+        ecomElementOrder: i + 1,
+        ecomElementParentId: ecomElementsByUser[i].ecomElement.ecomElementId,
+        elementLength: ecomElementsByUser[i].elementLength,
+        elementPaddingType: ecomElementsByUser[i].elementPaddingType,
+        elementPaddingValue: ecomElementsByUser[i].elementPaddingValue,
+      };
+
+      post.ecomDetails.push(ecomDetailsJson);
+    }
+
+    fetch(`${authentication.SERVER_URL}/v1/config/ecom-layouts`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authentication.token}`,
+        branchId: "1",
+        instId: "1",
+      },
+      body: JSON.stringify(post),
+    })
+      .then((response) => {
+        console.log(response);
+        if (response.ok) {
+          toast.success("Property added successfully", {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            progress: undefined,
+          });
+          setTimeout(() => {
+            window.location.href = "/listEcomLayout";
+          }, 5000);
+        } else if (response.status === 401) {
+          setFailed(true);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (data.errors !== null) {
+          const lengthOfErrors = data.errors.length;
+          for (let i = 0; i < lengthOfErrors; i++) {
+            toast.error(data.errors[i], {
+              position: "top-center",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              progress: undefined,
+            });
+          }
+        }
+      })
+      .catch((err) => {
+        toast.error(err, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          progress: undefined,
+        });
+      });
+  }
 
   useEffect(() => {
     setLoading(true);
@@ -68,8 +202,11 @@ const EcomLayoutForm = () => {
       .finally(() => {
         setLoading(false);
       });
+  }, []);
 
-    if (ecomLayoutId ? true : false) {
+  useEffect(() => {
+    if (ecomLayoutId) {
+      setLoading(true);
       fetch(
         `${authentication.SERVER_URL}/v1/config/ecom-layouts/${ecomLayoutId}`,
         {
@@ -98,8 +235,19 @@ const EcomLayoutForm = () => {
         });
     }
   }, [ecomLayoutId]);
+
+  useEffect(() => {
+    let updatedCheck = [];
+
+    for (let i = 0; i < ecomElementsByUser.length; i++) {
+      updatedCheck.push(ecomElementsByUser[i].ecomElement.ecomElementId);
+    }
+    setChecked(updatedCheck);
+  }, [checked, ecomElementsByUser]);
+
   return (
     <>
+      <ToastContainer />
       {loading ? (
         <Loading />
       ) : (
@@ -120,8 +268,14 @@ const EcomLayoutForm = () => {
                     variant="outlined"
                     size="small"
                     label="Enter Layout Name"
+                    inputProps={{
+                      maxLength: 100,
+                    }}
                     type="text"
+                    error={nameValidationError}
+                    helperText={nameValidationMessage}
                     value={ecomLayoutId ? layoutName : null}
+                    onChange={handleChangeLayoutName}
                   />
                 </div>
                 <div className="right-ecom-header-container">
@@ -131,13 +285,23 @@ const EcomLayoutForm = () => {
                       defaultMessage="Layout Type"
                     />
                   </label>
-                  <TextField
-                    variant="outlined"
-                    size="small"
-                    label="Enter Layout Type"
-                    type="text"
-                    value={ecomLayoutId ? layoutType : null}
-                  />
+                  <FormControl sx={{ m: 1, width: 150 , bgcolor: "#ffffff"}} size="small">
+                    <InputLabel id="select-layout-type">
+                      {getKeyFromValue(parseInt(layoutType), layoutTypeMap)}
+                    </InputLabel>
+                    <Select
+                      labelId="select-layout-type"
+                      label="Layout Type"
+                      onChange={(e) => setLayoutType(e.target.value)}
+                    >
+                      <MenuItem value={layoutTypeMap["XML"]}>{"XML"}</MenuItem>
+                      <MenuItem value={layoutTypeMap["EXCEL"]}>
+                        {"EXCEL"}
+                      </MenuItem>
+                      <MenuItem value={layoutTypeMap["TXT"]}>{"TXT"}</MenuItem>
+                      <MenuItem value={layoutTypeMap["CSV"]}>{"CSV"}</MenuItem>
+                    </Select>
+                  </FormControl>
                 </div>
               </div>
               <Typography className="MuiTypoGraphy-root">
@@ -155,53 +319,11 @@ const EcomLayoutForm = () => {
                       defaultMessage="Select Element To Add"
                     />
                   </Typography>
-                  <Paper
-                    sx={{
-                      minHeight: 600,
-                      maxHeight: 600,
-                      overflow: "auto",
-                      maxWidth: 400,
-                    }}
-                  >
-                    <List
-                      sx={{
-                        width: "100%",
-                        maxWidth: 400,
-                        bgcolor: "background.paper",
-                      }}
-                    >
-                      {ecomElements.map((value) => {
-                        return (
-                          <ListItem
-                            key={value.ecomElementId}
-                            disablePadding
-                            sx={{
-                              border: "1px solid gray",
-                              borderRadius: "4px",
-                            }}
-                          >
-                            <ListItemButton
-                              role={undefined}
-                              onClick={handleToggle(value.ecomElementId)}
-                              dense
-                            >
-                              <ListItemIcon>
-                                <Checkbox
-                                  edge="start"
-                                  checked={
-                                    checked.indexOf(value.ecomElementId) !== -1
-                                  }
-                                  tabIndex={-1}
-                                  disableRipple
-                                />
-                              </ListItemIcon>
-                              <ListItemText primary={value.elementName} />
-                            </ListItemButton>
-                          </ListItem>
-                        );
-                      })}
-                    </List>
-                  </Paper>
+                  <ElementList
+                    ecomElements={ecomElements}
+                    checked={checked}
+                    handleToggle={handleToggle}
+                  />
                 </div>
                 <div className="right-list">
                   <Typography className="MuiTypoGraphy-root-paper">
@@ -214,7 +336,7 @@ const EcomLayoutForm = () => {
                     sx={{
                       minHeight: 600,
                       overflow: "auto",
-                      minWidth: 930,
+                      width: 930,
                       display: "flex",
                       alignItems: "top",
                       justifyContent: "center",
@@ -222,59 +344,10 @@ const EcomLayoutForm = () => {
                     }}
                   >
                     {ecomElementsByUser.length !== 0 ? (
-                      <List sx={{ width: "100%", bgcolor: "background.paper" }}>
-                        {ecomElementsByUser.map((value) => {
-                          return (
-                            <ListItem
-                              key={value.ecomDetailId}
-                              disablePadding
-                              sx={{
-                                border: "1px solid gray",
-                                borderRadius: "4px",
-                                width: "100%",
-                              }}
-                            >
-                              <ListItemButton
-                                role={undefined}
-                                onClick={handleToggle(value.ecomDetailId)}
-                                dense
-                              >
-                                <ListItemIcon>
-                                  <DragHandleIcon edge="start"></DragHandleIcon>
-                                </ListItemIcon>
-
-                                <ListItemText
-                                  primary={value.ecomElement.elementName}
-                                />
-
-                                <TextField
-                                  variant="outlined"
-                                  size="small"
-                                  label="Length"
-                                  type="text"
-                                  value={
-                                    ecomLayoutId ? value.elementLength : null
-                                  }
-                                />
-                                <ListItemText
-                                  primary={value.elementPaddingType}
-                                />
-                                <TextField
-                                  variant="outlined"
-                                  size="small"
-                                  label="Padding Character"
-                                  type="text"
-                                  value={
-                                    ecomLayoutId
-                                      ? value.elementPaddingValue
-                                      : null
-                                  }
-                                />
-                              </ListItemButton>
-                            </ListItem>
-                          );
-                        })}
-                      </List>
+                      <EcomDisplayElementList
+                        ecomElementsByUser={ecomElementsByUser}
+                        setEcomElementsByUser={setEcomElementsByUser}
+                      />
                     ) : (
                       <Typography>
                         <FormattedMessage
@@ -302,6 +375,7 @@ const EcomLayoutForm = () => {
                   <Button
                     variant="contained"
                     endIcon={<FaSave className="save" />}
+                    onClick={() => handleSubmit()}
                   >
                     {" "}
                     <FormattedMessage
