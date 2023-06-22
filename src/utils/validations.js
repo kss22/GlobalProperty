@@ -8,6 +8,11 @@ const ecomElementPaddingValueRegExp = /^[a-zA-Z0-9-_,.]+( [a-zA-Z0-9-_,.]+)*$/;
 const acquirerCodeRegExp = /^[a-zA-Z0-9]+$/;
 const acquirerDescRegExp = /^[a-zA-Z0-9]+$/;
 const acquirerZpkRegExp = /^[a-zA-Z0-9]+$/;
+const interfaceCodeRexExp = /^[0-9]+$/;
+const interfaceDescriptionRegExp = /^[a-zA-Z0-9]+$/;
+const interfaceKeyRegExp = /^[a-zA-Z0-9]+$/;
+const interfaceCheckValueRegExp = /^[a-zA-Z0-9]+$/;
+const interfaceSiteIdRexExp = /^[0-9]+$/;
 
 const validations = {
   propertyValue: Yup.string()
@@ -51,6 +56,40 @@ const validations = {
     .required("Zpk is required")
     .matches(acquirerZpkRegExp, "Zpk must be alphanumeric")
     .max(32, "Zpk length must be less than 32"),
+  acquirerInterfaceCode: Yup.string()
+    .trim()
+    .required("Interface Code is required")
+    .matches(interfaceCodeRexExp, "Interface Code must be numeric")
+    .max(10, "Interface Code length must be less than 10"),
+  acquirerInterfaceDesc: Yup.string()
+    .trim()
+    .required("Interface Description is required")
+    .matches(
+      interfaceDescriptionRegExp,
+      "Interface Description must be alphanumeric"
+    )
+    .max(100, "Interface Description length must be less than 100"),
+  acquirerInterfaceKey: Yup.string()
+    .trim()
+    .required("Interface Key is required")
+    .matches(interfaceKeyRegExp, "Interface Key must be alphanumeric")
+    .length(32, "Interface Key must be of length 32"),
+  acquirerInterfaceCheckValue: Yup.string()
+    .trim()
+    .required("Interface check value is required")
+    .matches(
+      interfaceCheckValueRegExp,
+      "Interface check value must be alphanumeric"
+    )
+    .max(4, "Interface check value length must be less than 4"),
+  acquirerInterfaceSite: Yup.string()
+    .trim()
+    .required("Interface site id is required")
+    .matches(
+      interfaceSiteIdRexExp,
+      "Interface site id must be numeric and less than 99,999,999"
+    )
+    .max(8, "Interface site id must be less than 99,999,999"),
 };
 
 export default validations;

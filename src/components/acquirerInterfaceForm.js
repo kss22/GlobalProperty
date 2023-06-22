@@ -31,7 +31,6 @@ export default function AcquirerInterfaceDialog({
 }) {
   const [loading, setLoading] = useState(false);
   const [failed, setFailed] = useState(false);
-  const [data, setData] = useState([]);
   const [status, setStatus] = useState(false);
   const [interfaceCode, setInterfaceCode] = useState("");
   const [interfaceDescription, setInterfaceDescription] = useState("");
@@ -46,8 +45,14 @@ export default function AcquirerInterfaceDialog({
   const [descValidationError, setDescValidationError] = useState(false);
   const [descValidationMessage, setDescValidationMessage] = useState("");
 
-  const [zpkValidationError, setZpkValidationError] = useState(false);
-  const [zpkValidationMessage, setZpkValidationMessage] = useState("");
+  const [keyValidationError, setKeyValidationError] = useState(false);
+  const [keyValidationMessage, setKeyValidationMessage] = useState("");
+
+  const [checkValueValidationError, setCheckValueValidationError] = useState(false);
+  const [checkValueValidationMessage, setCheckValueValidationMessage] = useState("");
+
+  const [siteValidationError, setSiteValidationError] = useState(false);
+  const [siteValidationMessage, setSiteValidationMessage] = useState("");
 
   useEffect(() => {
     if (id) {
@@ -70,7 +75,6 @@ export default function AcquirerInterfaceDialog({
           return response.json();
         })
         .then((data) => {
-          setData(data);
           setInterfaceCode(data.interfaceCode);
           setInterfaceDescription(data.interfaceDescription);
           setKey(data.key);
@@ -86,7 +90,6 @@ export default function AcquirerInterfaceDialog({
         })
         .catch((error) => console.error(error));
     } else {
-      setData([]);
       setInterfaceCode("");
       setInterfaceDescription("");
       setStatus(false);
@@ -169,7 +172,7 @@ export default function AcquirerInterfaceDialog({
 
     const value = e.target.value;
 
-    validations.acquirersCode
+    validations.acquirerInterfaceCode
       .validate(value)
       .then(() => {
         setInterfaceCode(value);
@@ -179,9 +182,9 @@ export default function AcquirerInterfaceDialog({
       .catch((error) => {
         setCodeValidationError(true);
         setCodeValidationMessage(error.message);
-        if (error.message === "Code is required") {
+        if (error.message === "Interface Code is required") {
           setInterfaceCode(value);
-        }
+        } 
       });
   };
 
@@ -190,7 +193,7 @@ export default function AcquirerInterfaceDialog({
 
     const value = e.target.value;
 
-    validations.acquirersDesc
+    validations.acquirerInterfaceDesc
       .validate(value)
       .then(() => {
         setInterfaceDescription(value);
@@ -201,12 +204,77 @@ export default function AcquirerInterfaceDialog({
         setDescValidationError(true);
         setDescValidationMessage(error.message);
 
-        if (error.message === "Description is required") {
+        if (error.message === "Interface Description is required") {
           setInterfaceDescription(value);
         }
       });
   };
+  const handleChangeKey = (e) => {
+    setKeyValidationError(false);
 
+    const value = e.target.value;
+
+    validations.acquirerInterfaceKey
+      .validate(value)
+      .then(() => {
+        setKey(value);
+        setKeyValidationError(false);
+        setKeyValidationMessage(null);
+      })
+      .catch((error) => {
+        setKeyValidationError(true);
+        setKeyValidationMessage(error.message);
+        if (error.message === "Interface Key is required") {
+          setKey(value);
+        }else if (error.message === "Interface Key must be of length 32"){
+          setKey(value);
+        }
+      });
+  };
+
+  const handleChangeCheckValue = (e) => {
+    setCheckValueValidationError(false);
+
+    const value = e.target.value;
+
+    validations.acquirerInterfaceCheckValue
+      .validate(value)
+      .then(() => {
+        setCheckDigit(value);
+        setCheckValueValidationError(false);
+        setCheckValueValidationMessage(null);
+      })
+      .catch((error) => {
+        setCheckValueValidationError(true);
+        setCheckValueValidationMessage(error.message);
+
+        if (error.message === "Interface check value is required") {
+          setCheckDigit(value);
+        }
+      });
+  };
+
+  const handleChangeSite = (e) => {
+    setSiteValidationError(false);
+
+    const value = e.target.value;
+
+    validations.acquirerInterfaceSite
+      .validate(value)
+      .then(() => {
+        setSite(value);
+        setSiteValidationError(false);
+        setSiteValidationMessage(null);
+      })
+      .catch((error) => {
+        setSiteValidationError(true);
+        setSiteValidationMessage(error.message);
+
+        if (error.message === "Interface site id is required") {
+          setSite(value);
+        }
+      });
+  };
   
 
   return (
@@ -248,7 +316,7 @@ export default function AcquirerInterfaceDialog({
                       type="text"
                       size="small"
                       inputProps={{
-                        maxLength: 20,
+                        maxLength: 10,
                       }}
                       className="MuiTextField-root"
                       value={interfaceCode}
@@ -270,7 +338,7 @@ export default function AcquirerInterfaceDialog({
                       type="text"
                       size="small"
                       inputProps={{
-                        maxLength: 50,
+                        maxLength: 100,
                       }}
                       className="MuiTextField-root"
                       value={interfaceDescription}
@@ -293,10 +361,10 @@ export default function AcquirerInterfaceDialog({
                       }}
                       className="MuiTextField-root"
                       value={key}
-                    //   error={zpkValidationError}
-                    //   helperText={zpkValidationMessage}
+                      error={keyValidationError}
+                      helperText={keyValidationMessage}
                       onChange={(e) => {
-                        setKey(e.target.value);
+                        handleChangeKey(e);
                       }}
                     />
                     <label className="required">
@@ -306,18 +374,14 @@ export default function AcquirerInterfaceDialog({
                       />
                     </label>
                     <FormControl sx={{ m: 1, minWidth: 250 }} size="small">
-                      {id ? (
-                        <InputLabel id="select-inst-name">
-                          {data.instName}
-                        </InputLabel>
-                      ) : (
+                      
                         <InputLabel id="select-inst-name">
                           <FormattedMessage
                             id="initial-status-option"
                             defaultMessage="Choose Initial Status"
                           />
                         </InputLabel>
-                      )}
+                      
 
                       <Select
                         labelId="select-inst-name"
@@ -328,11 +392,11 @@ export default function AcquirerInterfaceDialog({
                         }}
                       >
                         
-                          <MenuItem value={0}>
-                            {0}
+                          <MenuItem value={"U"}>
+                            U
                           </MenuItem>
-                          <MenuItem value={1}>
-                            {1}
+                          <MenuItem value={"D"}>
+                            D
                           </MenuItem>
                         
                       </Select>
@@ -351,15 +415,15 @@ export default function AcquirerInterfaceDialog({
                       type="text"
                       size="small"
                       inputProps={{
-                        maxLength: 32,
+                        maxLength: 4,
                       }}
                       className="MuiTextField-root"
                       value={checkDigit}
-                    //   error={zpkValidationError}
-                    //   helperText={zpkValidationMessage}
+                      error={checkValueValidationError}
+                      helperText={checkValueValidationMessage}
                       onChange={(e) => {
                         // handleChangeZpk(e);
-                        setCheckDigit(e.target.value);
+                        handleChangeCheckValue(e);
                       }}
                     />
                     <label className="required">
@@ -374,15 +438,15 @@ export default function AcquirerInterfaceDialog({
                       type="text"
                       size="small"
                       inputProps={{
-                        maxLength: 32,
+                        maxLength: 8,
                       }}
                       className="MuiTextField-root"
                       value={site}
-                    //   error={zpkValidationError}
-                    //   helperText={zpkValidationMessage}
+                      error={siteValidationError}
+                      helperText={siteValidationMessage}
                       onChange={(e) => {
                         // handleChangeZpk(e);
-                        setSite(e.target.value);
+                        handleChangeSite(e);
                       }}
                     />
                     <label className="required">
@@ -406,7 +470,7 @@ export default function AcquirerInterfaceDialog({
                       />
                     </Button>
                   </Tooltip>
-                  <Tooltip title="Create Acquirer">
+                  <Tooltip title="Create Interface">
                     <Button
                       variant="contained"
                       endIcon={<FaSave className="save" />}
