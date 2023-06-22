@@ -1,7 +1,7 @@
 import React from "react";
-import GlobalPropertiesForm from "../components/globalPropertiesForm";
+import GlobalPropertiesForm from "../../components/globalPropertiesForm";
 import { useParams } from "react-router-dom";
-import { saveLanguage } from "../localStorage";
+import { saveLanguage } from "../../localStorage";
 import { Button, Tooltip } from "@mui/material";
 
 

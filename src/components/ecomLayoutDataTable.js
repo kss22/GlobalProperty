@@ -118,6 +118,7 @@ const EcomLayoutsTable = () => {
                           id="name-column"
                           defaultMessage="Name"
                         />
+                        <Tooltip title="Sort by Name">
                         <IconButton  onClick={handleSort}>
                           {sortOrder === "asc" ? (
                             <ArrowDownwardIcon sx={{ color:'#ff0000' }}/>
@@ -125,6 +126,7 @@ const EcomLayoutsTable = () => {
                             <ArrowUpwardIcon sx={{ color:'#0000ff'}}/>
                           )}
                         </IconButton>
+                        </Tooltip>
                       </TableCell>
                       <TableCell colSpan="2" className="actions-header">
                         <FormattedMessage

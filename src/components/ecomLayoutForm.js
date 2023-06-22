@@ -25,7 +25,7 @@ import validations from "../utils/validations";
 const EcomLayoutForm = () => {
   const { ecomLayoutId } = useParams();
   const [layoutName, setLayoutName] = useState("");
-  const [layoutType, setLayoutType] = useState("");
+  const [layoutType, setLayoutType] = useState('');
   const [ecomElementsByUser, setEcomElementsByUser] = useState([]);
   const [ecomElements, setEcomElements] = useState([]);
   const [checked, setChecked] = useState([0]);
@@ -285,7 +285,10 @@ const EcomLayoutForm = () => {
                       defaultMessage="Layout Type"
                     />
                   </label>
-                  <FormControl sx={{ m: 1, width: 150 , bgcolor: "#ffffff"}} size="small">
+                  <FormControl
+                    sx={{ m: 1, width: 150, bgcolor: "#ffffff" }}
+                    size="small"
+                  >
                     <InputLabel id="select-layout-type">
                       {getKeyFromValue(parseInt(layoutType), layoutTypeMap)}
                     </InputLabel>
@@ -371,7 +374,7 @@ const EcomLayoutForm = () => {
                     />
                   </Button>
                 </Tooltip>
-                <Tooltip title="Create property">
+                <Tooltip title="Create Ecom Layout">
                   <Button
                     variant="contained"
                     endIcon={<FaSave className="save" />}

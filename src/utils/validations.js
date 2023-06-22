@@ -5,6 +5,10 @@ const propertValueError = "Property value should be alphanumeric";
 const ecomLayoutNameRegExp = /^[a-zA-Z0-9_-]+( [a-zA-Z0-9_-]+)*$/;
 const ecomElementLengthRexExp = /^[0-9]+$/;
 const ecomElementPaddingValueRegExp = /^[a-zA-Z0-9-_,.]+( [a-zA-Z0-9-_,.]+)*$/;
+const acquirerCodeRegExp = /^[a-zA-Z0-9]+$/;
+const acquirerDescRegExp = /^[a-zA-Z0-9]+$/;
+const acquirerZpkRegExp = /^[a-zA-Z0-9]+$/;
+
 const validations = {
   propertyValue: Yup.string()
     .trim()
@@ -32,6 +36,21 @@ const validations = {
       "Padding value must be alphanumeric, accepts '.', '_', ',', '-'"
     )
     .max(100, "Padding Value length must be less than 100"),
+  acquirersCode: Yup.string()
+    .trim()
+    .required("Code is required")
+    .matches(acquirerCodeRegExp, "Come must be alphanumeric")
+    .max(20, "Code length must be less than 20"),
+  acquirersDesc: Yup.string()
+    .trim()
+    .required("Description is required")
+    .matches(acquirerDescRegExp, "Description must be alphanumeric")
+    .max(50, "Description length must be less than 50"),
+  acquirersZpk: Yup.string()
+    .trim()
+    .required("Zpk is required")
+    .matches(acquirerZpkRegExp, "Zpk must be alphanumeric")
+    .max(32, "Zpk length must be less than 32"),
 };
 
 export default validations;

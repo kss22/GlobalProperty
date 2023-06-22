@@ -96,9 +96,12 @@ body{
   color: #0000ff;
 }
 
+
+
 .pagination {
   padding-top: 3px;
   display: flex;
+  justify-content: center;
   align-items: center;
 }
 
@@ -120,6 +123,9 @@ body{
   font-size: 14px;
   color: #666;
 }
+
+
+
 
 .loading-message {
   position: fixed;
@@ -147,16 +153,116 @@ body{
 .divContainer {
   width: 800px;
   margin: 0 auto;
+  max-width: 800px;
   padding: 20px;
   background-color: #f4f4f4;
   border: 1px solid #ccc;
   border-radius: 5px;
 }
 
+.acquirerDivContainer {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.left-container-acquirer {
+  margin-bottom: 1rem;
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.right-container-acquirer {
+  margin-left: 2rem;
+  margin-bottom: 1rem;
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.Entries-acquirer {
+  display: flex;
+}
+
+.Entries-acquirer label.required::after {
+  content: "*";
+  color: red;
+  margin-left: 4px;
+}
+
+.Submissions-acquirer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.Submissions-acquirer button {
+  margin-right: 1rem;
+}
+
 .Header {
   margin-bottom: 20px;
 
 }
+
+.Header h2 {
+  font-size: 20px;
+  color: #333;
+  margin-bottom: 3px;
+}
+
+.Header h5{
+  font-size: 12px;
+  color: #666;
+  margin-top: 3px;
+  font-weight: 100;
+}
+
+.Entries {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+.Entries .left-container {
+  flex-basis: calc(50% - 20px);
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.Entries .right-container {
+  flex-basis: calc(50% - 20px);
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.Entries label.required::after {
+  content: "*";
+  color: red;
+  margin-left: 4px;
+}
+
+
+.Submissions {
+  margin-top: 20px;
+  text-align:right;
+}
+
+.Submissions a {
+  margin-right: 10px;
+  color: #333;
+  text-decoration: none;
+}
+
 
 .EcomLayoutContainer{
   margin-top: 50px;
@@ -233,55 +339,73 @@ body{
   align-items: flex-start;
 }
 
-.Header h2 {
-  font-size: 20px;
-  color: #333;
-  margin-bottom: 3px;
+
+
+/*Responsiveness*/
+
+
+@media only screen and (max-width: 600px) {
+  .ElementDivContainer.left-list,
+  .ElementDivContainer.right-list {
+    flex-basis: 100%;
+  }
+  .Submissions {
+    text-align: center;
+  }
+
+  .Submissions a {
+    display: block;
+    margin: 10px auto;
+  }
 }
 
-.Header h5{
-  font-size: 12px;
-  color: #666;
-  margin-top: 3px;
-  font-weight: 100;
+@media only screen and (max-width: 768px) {
+  .ecom-header {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .ecom-header .left-ecom-header-container,
+  .ecom-header .right-ecom-header-container {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .Submissions {
+    margin-top: 10px;
+  }
+  body {
+    margin: 20px;
+  }
+
+  .MainContainer,
+  .wrap {
+    width: 100%;
+    max-width: none;
+  }
+
+  .Entries .left-container,
+  .Entries .right-container {
+    flex-basis: 100%;
+  }
+
+  .Header h2 {
+    font-size: 18px;
+  }
+
+  .Header h5 {
+    font-size: 10px;
+  }
 }
 
-.Entries {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: space-between;
-}
+@media only screen and (max-width: 992px) {
+  .ecom-header {
+    padding-left: 20px;
+    gap: 20px;
+  }
 
-.Entries .left-container {
-  flex-basis: calc(50% - 20px);
-  display: flex;
-  gap: 20px;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.Entries .right-container {
-  flex-basis: calc(50% - 20px);
-  display: flex;
-  gap: 20px;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.Entries label.required::after {
-  content: "*";
-  color: red;
-  margin-left: 4px;
-}
-
-.Submissions {
-  margin-top: 20px;
-  text-align:right;
-}
-
-.Submissions a {
-  margin-right: 10px;
-  color: #333;
-  text-decoration: none;
+  .ElementDivContainer {
+    flex-direction: column;
+    align-items: center;
+  }
 }

@@ -24,5 +24,12 @@
     "select-element-to-add-label": "Sélectionnez l'élément à ajouter",
     "edit-layout-label": "Modifier la mise en page",
     "no-rows-to-show-label": "Aucune ligne à afficher",
-    "padding-type-option": "Choisissez le type de rembourrage"
+    "padding-type-option": "Choisissez le type de rembourrage",
+    "add-acquirer-button": "Ajouter un acquéreur",
+    "code-column": "Code",
+    "description-column":"Description",
+    "zpk-column":"ZPK",
+    "interface-column": "Interface",
+    "interface-option": "Choisir l'interface",
+    "enable-disable-label": "Activer/Désactiver"
 }

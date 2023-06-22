@@ -24,7 +24,14 @@
     "select-element-to-add-label": "Select Element To Add",
     "edit-layout-label": "Edit Layout",
     "no-rows-to-show-label": "No Rows To Show",
-    "padding-type-option": "Choose Padding Type"
+    "padding-type-option": "Choose Padding Type",
+    "add-acquirer-button": "Add Acquirer",
+    "code-column": "Code",
+    "description-column":"Description",
+    "zpk-column":"ZPK",
+    "interface-column": "Interface",
+    "interface-option": "Choose Interface",
+    "enable-disable-label": "Enable/Disable"
     
     
 }

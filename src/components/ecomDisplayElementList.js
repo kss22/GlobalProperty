@@ -20,7 +20,7 @@ const ListItemComponent = ({
   onDragStart,
   onDragEnter,
   onDragEnd,
-  ecomElementsByUser,
+  ecomElementsByUser
 }) => {
   const [lengthValidationError, setLengthValidationError] = useState(false);
   const [lengthValidationMessage, setLengthValidationMessage] = useState("");
@@ -30,7 +30,7 @@ const ListItemComponent = ({
   const [paddingValueValidationMessage, setPaddingValueValidationMessage] =
     useState("");
 
-  const handleChangeElementLength = (e, index) => {
+  const handleChangeElementLength = (e) => {
     setLengthValidationError(false);
 
     const value = e.target.value;
@@ -47,7 +47,7 @@ const ListItemComponent = ({
       });
   };
 
-  const handleChangeElementPaddingValue = (e, index) => {
+  const handleChangeElementPaddingValue = (e) => {
     setPaddingValueValidationError(false);
 
     const value = e.target.value;
@@ -137,7 +137,7 @@ const ListItemComponent = ({
       <TextField
         variant="outlined"
         size="small"
-        label="Padding Character"
+        label="Padding Value"
         type="text"
         error={paddingValueValidationError}
         helperText={paddingValueValidationMessage}
@@ -202,6 +202,7 @@ const EcomDisplayElementList = ({
             onDragStart={dragStart}
             onDragEnter={dragEnter}
             onDragEnd={drop}
+            ecomElementsByUser={ecomElementsByUser}
           />
         );
       })}
