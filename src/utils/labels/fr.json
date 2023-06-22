@@ -31,5 +31,11 @@
     "zpk-column":"ZPK",
     "interface-column": "Interface",
     "interface-option": "Choisir l'interface",
-    "enable-disable-label": "Activer/Désactiver"
+    "enable-disable-label": "Activer/Désactiver",
+    "interface-code-column": "Code d'interface",
+    "initial-status-column": "Statut initial",
+    "check-digit-column": "Chiffre de contrôle",
+    "site-column": "Placer",
+    "add-acquirer-interface-button": "Ajouter une interface acquéreur",
+    "initial-status-option": "Choisissez le statut initial"
 }

@@ -1,8 +1,8 @@
 import { Button, Tooltip } from "@mui/material";
-import { saveLanguage } from "../localStorage";
+import { saveLanguage } from "../../localStorage";
 import { FaPlus } from "react-icons/fa";
 import { FormattedMessage } from "react-intl";
-import EcomLayoutsTable from "../components/ecomLayoutDataTable";
+import EcomLayoutsTable from "../../components/ecomLayoutDataTable";
 
 const ListEcomLayout = () => {
   return (
@@ -25,6 +25,16 @@ const ListEcomLayout = () => {
           variant="text"
         >
           Acquirer
+        </Button>
+      </Tooltip>
+      <Tooltip title="Go to acquirer interfaces">
+        <Button
+          onClick={() => {
+            window.location.href = "/listAcquirerInterface";
+          }}
+          variant="text"
+        >
+          Acquirer Interfaces
         </Button>
       </Tooltip>
       <Tooltip title="French">

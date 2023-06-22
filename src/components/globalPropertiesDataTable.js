@@ -7,7 +7,6 @@ import {
   Button,
   FormControl,
   IconButton,
-  InputLabel,
   MenuItem,
   Paper,
   Select,
@@ -24,20 +23,20 @@ import { ToastContainer, toast } from "react-toastify";
 import Loading from "./loading";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import { States } from "../utils/constants";
 
-const GlobalPropertiesTable = () => {
+const GlobalPropertiesTable = ({ setAuthState, setId }) => {
   const [data, setData] = useState([]);
   const [offset, setOffset] = useState(0);
   const [numOfRecords, setNumOfRecords] = useState(0);
-  const [pageSize, setPageSize] = useState(10);
   const [loading, setLoading] = useState(false);
   const options = [];
+  const [pageSize, setPageSize] = useState(10);
   const [failed, setFailed] = useState(false);
 
   const [sortOrderName, setSortOrderName] = useState("asc");
   const [sortOrderKey, setSortOrderKey] = useState("asc");
   const [sortOrderInst, setSortOrderInst] = useState("asc");
-
 
   const handleSortName = () => {
     const sortedData = [...data].sort((a, b) => {
@@ -93,8 +92,7 @@ const GlobalPropertiesTable = () => {
     setSortOrderInst(sortOrderInst === "asc" ? "desc" : "asc");
   };
 
-
-  for (let i = 5; i <= numOfRecords; i += 5) {
+  for (let i = 10; i <= numOfRecords; i += 10) {
     options.push(i);
   }
 
@@ -241,9 +239,12 @@ const GlobalPropertiesTable = () => {
                               <Button
                                 className="edit-button"
                                 startIcon={<FaEdit />}
-                                onClick={() =>
-                                  (window.location.href = `/addGlobalProperty/${item.propId}`)
-                                }
+                                onClick={() => {
+                                  setAuthState(
+                                    States.ACQUIRER_INTERFACE_CREATION
+                                  );
+                                  setId(item.propId);
+                                }}
                               />
                             </Tooltip>
                           </TableCell>
@@ -305,14 +306,13 @@ const GlobalPropertiesTable = () => {
                   )}
 
                 <FormControl sx={{ m: 1, minWidth: 80 }} size="small">
-                  <InputLabel id="select-page-size">{pageSize}</InputLabel>
 
                   <Select
                     labelId="select-page-size"
                     label="Page Size"
+                    value={pageSize}
                     onChange={(e) => setPageSize(e.target.value)}
                   >
-                    <MenuItem value={1}>1</MenuItem>
                     {options.map((number) => (
                       <MenuItem value={number}>{number}</MenuItem>
                     ))}

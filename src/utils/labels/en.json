@@ -31,7 +31,13 @@
     "zpk-column":"ZPK",
     "interface-column": "Interface",
     "interface-option": "Choose Interface",
-    "enable-disable-label": "Enable/Disable"
+    "enable-disable-label": "Enable/Disable",
+    "interface-code-column": "Interface Code",
+    "initial-status-column": "Initial Status",
+    "check-digit-column": "Check digit",
+    "site-column": "Site",
+    "add-acquirer-interface-button": "Add Acquirer Interface",
+    "initial-status-option": "Choose Initial Status"
     
     
 }

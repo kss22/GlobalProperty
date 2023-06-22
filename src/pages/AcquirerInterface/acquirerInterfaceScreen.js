@@ -1,16 +1,17 @@
 import React, { useState } from "react";
-import { FaPlus } from "react-icons/fa";
-import "../App.css";
-import { saveLanguage } from "../localStorage";
-import { FormattedMessage } from "react-intl";
+import "../../App.css";
+import { saveLanguage } from "../../localStorage";
 import { Button, Tooltip } from "@mui/material";
-import AcquirerTable from "../components/acquirerDataTable";
-import AcquirerDialog from "../components/acquirerFormDialog";
-import { States } from "../utils/constants";
+import { FormattedMessage } from "react-intl";
+import { FaPlus } from "react-icons/fa";
+import AcquirerInterfaceTable from "../../components/acquirerInterfaceDataTable";
+import { States } from "../../utils/constants";
+import AcquirerInterfaceDialog from "../../components/acquirerInterfaceForm";
 
-const AcquirerScreen = () => {
+const AcquirerInterfaceScreen = () => {
   let [authState, setAuthState] = useState(States.PENDING);
   let [id, setId] = useState(null);
+
   return (
     <div className="MainContainer">
       <Tooltip title="Go to ecom">
@@ -31,6 +32,16 @@ const AcquirerScreen = () => {
           variant="text"
         >
           Global Properties
+        </Button>
+      </Tooltip>
+      <Tooltip title="Go to acquirer interfaces">
+        <Button
+          onClick={() => {
+            window.location.href = "/listAcquirers";
+          }}
+          variant="text"
+        >
+          Acquirers
         </Button>
       </Tooltip>
       <Tooltip title="French">
@@ -56,38 +67,44 @@ const AcquirerScreen = () => {
         </Button>
       </Tooltip>
       <div>
-        <AcquirerDialog
-          open={authState === States.ACQUIRER_CREATION}
-          id={id}
-          title="Acquirer"
-          handleCancel={() => {setAuthState(States.PENDING); setId(null);}}
-          onClose={() => {setAuthState(States.PENDING); setId(null);}}
-          setAuth={setAuthState}
-        />
+      <AcquirerInterfaceDialog
+      open={authState === States.ACQUIRER_INTERFACE_CREATION}
+      id={id}
+      title="Acquirer Interface"
+      handleCancel={() => {
+        setAuthState(States.PENDING);
+        setId(null);
+      }}
+      onClose={() => {
+        setAuthState(States.PENDING);
+        setId(null);
+      }}
+      setAuth={setAuthState}
+    />
         <div className="Header">
-          <h2>Acquirers</h2>
+          <h2>Acquirer Interface</h2>
         </div>
         <div className="link-wrapper">
-          <Tooltip title="Add new acquirer" placement="top">
+          <Tooltip title="Add new acquirer Interface" placement="top">
             <Button
               className="link"
-              onClick={() => setAuthState(States.ACQUIRER_CREATION)}
+              onClick={() => setAuthState(States.ACQUIRER_INTERFACE_CREATION)}
               variant="text"
               startIcon={<FaPlus />}
             >
               <FormattedMessage
-                id="add-acquirer-button"
-                defaultMessage="Add Acquirer"
+                id="add-acquirer-interface-button"
+                defaultMessage="Add Acquirer Interface"
               />
             </Button>
           </Tooltip>
         </div>
       </div>
       <div className="Table">
-        <AcquirerTable setAuthState={setAuthState} setIdProvided={setId}/>
+        <AcquirerInterfaceTable setAuthState={setAuthState} setIdProvided={setId}/>
       </div>
     </div>
   );
 };
 
-export default AcquirerScreen;
+export default AcquirerInterfaceScreen;

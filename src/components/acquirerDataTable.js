@@ -162,7 +162,7 @@ const AcquirerTable = ({ setAuthState, setIdProvided }) => {
   const [sortOrderByInterface, setSortOrderByInterface] = useState("asc");
   const [offset, setOffset] = useState(0);
   const [numOfRecords, setNumOfRecords] = useState(0);
-  const [pageSize, setPageSize] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
   const options = [];
 
   useEffect(() => {
@@ -246,7 +246,7 @@ const AcquirerTable = ({ setAuthState, setIdProvided }) => {
     setSortOrderByInterface(sortOrderByInterface === "asc" ? "desc" : "asc");
   };
 
-  for (let i = 5; i <= numOfRecords; i += 5) {
+  for (let i = 10; i <= numOfRecords; i += 10) {
     options.push(i);
   }
 
@@ -379,7 +379,6 @@ const AcquirerTable = ({ setAuthState, setIdProvided }) => {
                     label="Page Size"
                     onChange={(e) => setPageSize(e.target.value)}
                   >
-                    <MenuItem value={1}>1</MenuItem>
                     {options.map((number) => (
                       <MenuItem value={number}>{number}</MenuItem>
                     ))}

@@ -1,14 +1,5 @@
-import React from "react";
-import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { FaSave } from "react-icons/fa";
-import * as authentication from "../utils/authentication";
-import validations from "../utils/validations";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { FormattedMessage } from "react-intl";
 import {
-  Button,
+  Divider,
   FormControl,
   InputLabel,
   MenuItem,
@@ -16,30 +7,45 @@ import {
   TextField,
   Tooltip,
 } from "@mui/material";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import React, { useEffect, useState } from "react";
+import { FaSave } from "react-icons/fa";
+import { FormattedMessage } from "react-intl";
+import { ToastContainer, toast } from "react-toastify";
 import Loading from "./loading";
 import Failed from "./failedComponent";
+import * as authentication from "../utils/authentication";
+import validations from "../utils/validations";
+import { States } from "../utils/constants";
 
-const GlobalPropertiesForm = () => {
-  const { propId } = useParams();
+export default function GlobalPropertiesDialog({
+  open,
+  onClose,
+  title,
+  handleCancel,
+  id,
+  setAuth,
+}) {
+  const propId = id;
 
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const [property, setProperty] = useState([]);
-
-  const [prop, setProp] = useState(null);
+  const [prop, setProp] = useState('');
   const [keys, setKeys] = useState([]);
   const [inst, setInst] = useState([]);
 
   // const [propId, setPropId] = useState(0);
 
-  const [propValue, setPropValue] = useState(null);
-  const [propKey, setPropKey] = useState("");
+  const [propValue, setPropValue] = useState('');
+  const [propKey, setPropKey] = useState('');
 
-  const [instId, setInstId] = useState(0);
+  const [instId, setInstId] = useState('');
 
   const [validationError, setValidationError] = useState(false);
-  const [validationMessage, setValidationMessage] = useState("");
+  const [validationMessage, setValidationMessage] = useState('');
   const [failed, setFailed] = useState(false);
 
   const handleChangePropValue = (e) => {
@@ -110,8 +116,9 @@ const GlobalPropertiesForm = () => {
             pauseOnHover: true,
             progress: undefined,
           });
+          setAuth(States.PENDING);
           setTimeout(() => {
-            window.location.href = '/listEcomLayout';
+            window.location.reload();
           }, 5000);
         } else if (response.status === 401) {
           setFailed(true);
@@ -144,9 +151,51 @@ const GlobalPropertiesForm = () => {
         });
       });
   }
-  useEffect(() => {
+  useEffect(()=>{
     setLoading(true);
-    if (propId ? true : false) {
+    fetch(`${authentication.SERVER_URL}/v1/config/global-props/prop-names`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${authentication.token}`,
+        branchId: "1",
+        instId: "1",
+      },
+    })
+      .then((response) => {
+        if (response.status === 401) {
+          setFailed(true);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setData(data);
+      });
+    fetch(`${authentication.SERVER_URL}/v1/config/institutions/user/1`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${authentication.token}`,
+        branchId: "1",
+        instId: "1",
+      },
+    })
+      .then((response) => {
+        if (response.status === 401) {
+          setFailed(true);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+        setInst(data);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  },[]);
+
+  useEffect(() => {
+    if (propId) {
+      setLoading(true);
       fetch(`${authentication.SERVER_URL}/v1/config/global-props/${propId}`, {
         method: "GET",
         headers: {
@@ -163,261 +212,216 @@ const GlobalPropertiesForm = () => {
         })
         .then((data) => {
           console.log(data);
-          setProperty(data);
           setPropValue(data.propValue);
           setPropKey(data.propKey);
           setInstId(data.instId);
           setProp(data.propName);
-        });
-      fetch(`${authentication.SERVER_URL}/v1/config/global-props/prop-names`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${authentication.token}`,
-          branchId: "1",
-          instId: "1",
-        },
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          setData(data);
-        });
-      fetch(`${authentication.SERVER_URL}/v1/config/institutions/user/1`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${authentication.token}`,
-          branchId: "1",
-          instId: "1",
-        },
-      })
-        .then((response) => {
-          if (response.status === 401) {
-            setFailed(true);
-          }
-          return response.json();
-        })
-        .then((data) => {
-          console.log(data);
-          setInst(data);
-        })
-        .finally(() => {
+        }).finally(()=>{
           setLoading(false);
-        });
+        });        
     } else {
-      fetch(`${authentication.SERVER_URL}/v1/config/global-props/prop-names`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${authentication.token}`,
-          branchId: "1",
-          instId: "1",
-        },
-      })
-        .then((response) => {
-          if (response.status === 401) {
-            setFailed(true);
-          }
-          return response.json();
-        })
-        .then((data) => {
-          setData(data);
-        });
-      fetch(`${authentication.SERVER_URL}/v1/config/institutions/user/1`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${authentication.token}`,
-          branchId: "1",
-          instId: "1",
-        },
-      })
-        .then((response) => {
-          if (response.status === 401) {
-            setFailed(true);
-          }
-          return response.json();
-        })
-        .then((data) => {
-          console.log(data);
-          setInst(data);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
+        setPropValue('');
+        setPropKey('');
+        setKeys([]);
+        setInstId('');
+        setProp('');
     }
   }, [propId]);
+
+  useEffect(()=>{
+    if(prop){
+      fetch(
+        `${authentication.SERVER_URL}/v1/config/global-props/prop-values/${prop}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${authentication.token}`,
+            branchId: "1",
+            instId: "1",
+          },
+        }
+      )
+        .then((response) => {
+          if (response.status === 401) {
+            setFailed(true);
+          }
+          return response.json();
+        })
+        .then((data) => {
+          setKeys(data);
+        });
+    }
+    
+  },[prop]);
+  
 
   return (
     <div>
       <ToastContainer />
-      {loading ? (
-        <Loading />
-      ) : (
-        <div className="divContainer">
-          {failed ? (
-            <Failed />
-          ) : (
-            <div>
-              <div className="Entries">
-                <div className="left-container">
-                  <label className="required">
-                    <FormattedMessage
-                      id="property-name"
-                      defaultMessage="Property Name:"
-                    />
-                  </label>
-                  <FormControl sx={{ m: 1, minWidth: 250 }} size="small">
-                    {propId ? (
-                      <InputLabel id="select-prop-name">
-                        {property.propName}
-                      </InputLabel>
-                    ) : (
+      <Dialog
+        open={open}
+        onClose={onClose}
+        maxWidth="xs"
+        fullWidth
+        PaperProps={{
+          style: {
+            maxHeight: "150vh",
+            maxWidth: "50vw",
+          },
+        }}
+      >
+        {loading ? (
+          <Loading />
+        ) : (
+          <div className="acquirerDivContainer">
+            {failed ? (
+              <Failed />
+            ) : (
+              <div>
+                <DialogTitle>{title}</DialogTitle>
+                <Divider sx={{ marginBottom: 3 }} />
+                <div className="Entries">
+                  <div className="left-container">
+                    <label className="required">
+                      <FormattedMessage
+                        id="property-name"
+                        defaultMessage="Property Name:"
+                      />
+                    </label>
+                    <FormControl sx={{ m: 1, minWidth: 250 }} size="small">
                       <InputLabel id="select-prop-name">
                         <FormattedMessage
                           id="property-name-option"
                           defaultMessage="Choose Property Name"
                         />
                       </InputLabel>
-                    )}
 
-                    <Select
-                      labelId="select-prop-name"
-                      value={prop}
-                      label="Property Name"
-                      onChange={(e) => {
-                        setProp(e.target.value);
-                        handleChange(e);
-                      }}
-                    >
-                      {data.map((item) => (
-                        <MenuItem value={item}>{item}</MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
+                      <Select
+                        labelId="select-prop-name"
+                        value={prop}
+                        label="Property Name"
+                        onChange={(e) => {
+                          setProp(e.target.value);
+                          handleChange(e);
+                        }}
+                      >
+                        {data.map((item) => (
+                          <MenuItem value={item}>{item}</MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
 
-                  <label className="required">
-                    <FormattedMessage
-                      className="format"
-                      id="property-key"
-                      defaultMessage="Property Key:"
-                    />
-                  </label>
-                  <FormControl sx={{ m: 1, minWidth: 250 }} size="small">
-                    {propId ? (
-                      <InputLabel id="select-prop-key">
-                        {property.propKey}
-                      </InputLabel>
-                    ) : (
+                    <label className="required">
+                      <FormattedMessage
+                        className="format"
+                        id="property-key"
+                        defaultMessage="Property Key:"
+                      />
+                    </label>
+                    <FormControl sx={{ m: 1, minWidth: 250 }} size="small">
                       <InputLabel id="select-prop-key">
                         <FormattedMessage
                           id="property-key-option"
                           defaultMessage="Choose Property Key"
                         />
                       </InputLabel>
-                    )}
 
-                    <Select
-                      labelId="select-prop-key"
-                      value={propKey}
-                      label="Property Key"
-                      onChange={(e) => {
-                        setPropKey(e.target.value);
+                      <Select
+                        labelId="select-prop-key"
+                        value={propKey}
+                        label="Property Key"
+                        onChange={(e) => {
+                          setPropKey(e.target.value);
+                        }}
+                      >
+                        {keys.map((item) => (
+                          <MenuItem value={item}>{item}</MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </div>
+                  <div className="right-container">
+                    <label className="required">
+                      <FormattedMessage
+                        className="format"
+                        id="property-value"
+                        defaultMessage="Property Value:"
+                      />
+                    </label>
+                    <TextField
+                      variant="outlined"
+                      label="Enter Property Value"
+                      type="text"
+                      size="small"
+                      inputProps={{
+                        maxLength: 100,
                       }}
-                    >
-                      {keys.map((item) => (
-                        <MenuItem value={item}>{item}</MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </div>
-                <div className="right-container">
-                  <label className="required">
-                    <FormattedMessage
-                      className="format"
-                      id="property-value"
-                      defaultMessage="Property Value:"
+                      className="MuiTextField-root"
+                      error={validationError}
+                      helperText={validationMessage}
+                      value={propId ? propValue : null}
+                      onChange={handleChangePropValue}
                     />
-                  </label>
-                  <TextField
-                    variant="outlined"
-                    label="Enter Property Value"
-                    type="text"
-                    size="small"
-                    inputProps={{
-                      maxLength: 100,
-                    }}
-                    className="MuiTextField-root"
-                    error={validationError}
-                    helperText={validationMessage}
-                    value={propId ? propValue : null}
-                    onChange={handleChangePropValue}
-                  />
 
-                  <label className="required">
-                    <FormattedMessage
-                      className="format"
-                      id="institution-name"
-                      defaultMessage="Institution:"
-                    />
-                  </label>
+                    <label className="required">
+                      <FormattedMessage
+                        className="format"
+                        id="institution-name"
+                        defaultMessage="Institution:"
+                      />
+                    </label>
 
-                  <FormControl sx={{ m: 1, minWidth: 250 }} size="small">
-                    {propId ? (
-                      <InputLabel id="select-institution">
-                        {property.instName}
-                      </InputLabel>
-                    ) : (
+                    <FormControl sx={{ m: 1, minWidth: 250 }} size="small">
                       <InputLabel id="select-institution">
                         <FormattedMessage
                           id="institution-name-option"
                           defaultMessage="Choose Institution"
                         />
                       </InputLabel>
-                    )}
 
-                    <Select
-                      labelId="select-institution"
-                      label="Institution"
-                      onChange={(e) => setInstId(e.target.value)}
+                      <Select
+                        labelId="select-institution"
+                        label="Institution"
+                        value={instId}
+                        onChange={(e) => setInstId(e.target.value)}
+                      >
+                        {inst.map((item) => (
+                          <MenuItem value={item.instId}>
+                            {item.instName}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </div>
+                </div>
+                <div className="Submissions-acquirer">
+                  <Tooltip title="Cancel Creation">
+                    <Button variant="text" onClick={() => handleCancel()}>
+                      <FormattedMessage
+                        id="cancel-button"
+                        defaultMessage="cancel"
+                      />
+                    </Button>
+                  </Tooltip>
+                  <Tooltip title="Create Acquirer">
+                    <Button
+                      variant="contained"
+                      endIcon={<FaSave className="save" />}
+                      onClick={() => handleSubmit()}
                     >
-                      {inst.map((item) => (
-                        <MenuItem value={item.instId}>{item.instName}</MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
+                      {" "}
+                      <FormattedMessage
+                        id="submit-button"
+                        defaultMessage="Submit"
+                      />{" "}
+                    </Button>
+                  </Tooltip>
                 </div>
               </div>
-              <div className="Submissions">
-                <Tooltip title="Cancel Creation">
-                  <Button
-                    variant="text"
-                    onClick={() =>
-                      (window.location.href = "/listGlobalProperties")
-                    }
-                  >
-                    <FormattedMessage
-                      id="cancel-button"
-                      defaultMessage="cancel"
-                    />
-                  </Button>
-                </Tooltip>
-                <Tooltip title="Create property">
-                  <Button
-                    variant="contained"
-                    onClick={() => handleSubmit()}
-                    endIcon={<FaSave className="save" />}
-                  >
-                    {" "}
-                    <FormattedMessage
-                      id="submit-button"
-                      defaultMessage="Submit"
-                    />{" "}
-                  </Button>
-                </Tooltip>
-              </div>
-            </div>
-          )}
-        </div>
-      )}
+            )}
+          </div>
+        )}
+      </Dialog>
     </div>
   );
-};
-
-export default GlobalPropertiesForm;
+}

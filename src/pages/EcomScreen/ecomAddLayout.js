@@ -1,6 +1,6 @@
 import { Button, Tooltip } from "@mui/material";
-import EcomLayoutForm from "../components/ecomLayoutForm";
-import { saveLanguage } from "../localStorage";
+import EcomLayoutForm from "../../components/ecomLayoutForm";
+import { saveLanguage } from "../../localStorage";
 import { useParams } from "react-router-dom";
 import { FormattedMessage } from "react-intl";
 
