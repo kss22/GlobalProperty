@@ -301,6 +301,7 @@ export default function AcquirerDialog({
                       variant="outlined"
                       label="Enter Acquirer Code"
                       type="text"
+                      sx={{width: 220}}
                       size="small"
                       inputProps={{
                         maxLength: 20,
@@ -323,6 +324,7 @@ export default function AcquirerDialog({
                       variant="outlined"
                       label="Enter Acquirer Description"
                       type="text"
+                      sx={{width: 220}}
                       size="small"
                       inputProps={{
                         maxLength: 50,
@@ -342,6 +344,7 @@ export default function AcquirerDialog({
                       variant="outlined"
                       label="Enter Acquirer ZPK"
                       type="text"
+                      sx={{width: 220}}
                       size="small"
                       inputProps={{
                         maxLength: 32,
@@ -360,7 +363,7 @@ export default function AcquirerDialog({
                         defaultMessage="Institution"
                       />
                     </label>
-                    <FormControl sx={{ m: 1, minWidth: 250 }} size="small">
+                    <FormControl sx={{  minWidth: 220 }} size="small">
                       {id ? (
                         <InputLabel id="select-inst-name">
                           {data.instName}
@@ -395,7 +398,7 @@ export default function AcquirerDialog({
                         defaultMessage="Interface"
                       />
                     </label>
-                    <FormControl sx={{ m: 1, minWidth: 250 }} size="small">
+                    <FormControl sx={{ minWidth: 220 }} size="small">
                       {id ? (
                         <InputLabel id="select-interface">
                           {data.interfaceCode}

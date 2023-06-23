@@ -37,7 +37,9 @@
     "check-digit-column": "Check digit",
     "site-column": "Site",
     "add-acquirer-interface-button": "Add Acquirer Interface",
-    "initial-status-option": "Choose Initial Status"
+    "initial-status-option": "Choose Initial Status",
+    "branch-name-option": "Choose Branch Name",
+    "branch-column": "Branch:"
     
     
 }

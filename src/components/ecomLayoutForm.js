@@ -25,7 +25,7 @@ import validations from "../utils/validations";
 const EcomLayoutForm = () => {
   const { ecomLayoutId } = useParams();
   const [layoutName, setLayoutName] = useState("");
-  const [layoutType, setLayoutType] = useState('');
+  const [layoutType, setLayoutType] = useState('0');
   const [ecomElementsByUser, setEcomElementsByUser] = useState([]);
   const [ecomElements, setEcomElements] = useState([]);
   const [checked, setChecked] = useState([0]);
@@ -60,6 +60,7 @@ const EcomLayoutForm = () => {
   };
 
   const layoutTypeMap = {
+    "Choose Type": 0,
     XML: 1,
     EXCEL: 2,
     TXT: 3,
@@ -87,7 +88,7 @@ const EcomLayoutForm = () => {
         ecomElementOrder: 0,
         ecomLayoutId: 0,
         elementLength: "",
-        elementPaddingType: "",
+        elementPaddingType: "0",
         elementPaddingValue: "",
       });
     } else {

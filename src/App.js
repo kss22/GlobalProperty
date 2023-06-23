@@ -11,6 +11,7 @@ import AddEcomLayout from "./pages/EcomScreen/ecomAddLayout";
 import ListEcomLayout from "./pages/EcomScreen/ecomListLayout";
 import AcquirerScreen from "./pages/AcquirersScreen/acquirerScreen";
 import AcquirerInterfaceScreen from "./pages/AcquirerInterface/acquirerInterfaceScreen";
+import ReportScreen from "./pages/ReportsListScreen/reportsListScreen";
 
 function App() {
   const locale = getLanguage();
@@ -63,6 +64,14 @@ function App() {
           element={
             <IntlProvider locale={locale} messages={labels}>
               <AcquirerInterfaceScreen />
+            </IntlProvider>
+          }
+        />
+        <Route
+          path="/reports"
+          element={
+            <IntlProvider locale={locale} messages={labels}>
+              <ReportScreen />
             </IntlProvider>
           }
         />

@@ -37,5 +37,7 @@
     "check-digit-column": "Chiffre de contrôle",
     "site-column": "Placer",
     "add-acquirer-interface-button": "Ajouter une interface acquéreur",
-    "initial-status-option": "Choisissez le statut initial"
+    "initial-status-option": "Choisissez le statut initial",
+    "branch-name-option": "Choisissez le nom de la succursale",
+    "branch-column": "La Branche:"
 }

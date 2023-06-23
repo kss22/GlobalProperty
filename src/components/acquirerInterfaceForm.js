@@ -314,6 +314,7 @@ export default function AcquirerInterfaceDialog({
                       variant="outlined"
                       label="Enter Interface Code"
                       type="text"
+                      sx={{width: 220}}
                       size="small"
                       inputProps={{
                         maxLength: 10,
@@ -336,6 +337,7 @@ export default function AcquirerInterfaceDialog({
                       variant="outlined"
                       label="Enter Interface Description"
                       type="text"
+                      sx={{width: 220}}
                       size="small"
                       inputProps={{
                         maxLength: 100,
@@ -355,6 +357,7 @@ export default function AcquirerInterfaceDialog({
                       variant="outlined"
                       label="Enter Interface Key"
                       type="text"
+                      sx={{width: 220}}
                       size="small"
                       inputProps={{
                         maxLength: 32,
@@ -373,7 +376,7 @@ export default function AcquirerInterfaceDialog({
                         defaultMessage="Insitial Status"
                       />
                     </label>
-                    <FormControl sx={{ m: 1, minWidth: 250 }} size="small">
+                    <FormControl sx={{ minWidth: 220 }} size="small">
                       
                         <InputLabel id="select-inst-name">
                           <FormattedMessage
@@ -413,6 +416,7 @@ export default function AcquirerInterfaceDialog({
                       variant="outlined"
                       label="Enter Check Digit"
                       type="text"
+                      sx={{width: 220}}
                       size="small"
                       inputProps={{
                         maxLength: 4,
@@ -436,6 +440,7 @@ export default function AcquirerInterfaceDialog({
                       variant="outlined"
                       label="Enter Interface Site"
                       type="text"
+                      sx={{width: 220}}
                       size="small"
                       inputProps={{
                         maxLength: 8,

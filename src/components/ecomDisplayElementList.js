@@ -165,6 +165,7 @@ const EcomDisplayElementList = ({
   setEcomElementsByUser,
 }) => {
   const paddingMap = {
+    "Padding Type": 0,
     "Right Padding": 1,
     "Left Padding": 2,
   };

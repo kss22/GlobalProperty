@@ -43,6 +43,16 @@ const AcquirerScreen = () => {
           Acquirer Interfaces
         </Button>
       </Tooltip>
+      <Tooltip title="Go to reports">
+        <Button
+          onClick={() => {
+            window.location.href = "/reports";
+          }}
+          variant="text"
+        >
+          Reports
+        </Button>
+      </Tooltip>
       <Tooltip title="French">
         <Button
           onClick={() => {

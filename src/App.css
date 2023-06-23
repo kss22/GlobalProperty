@@ -175,7 +175,7 @@ body{
 }
 
 .right-container-acquirer {
-  margin-left: 2rem;
+  margin-left: 3rem;
   margin-bottom: 1rem;
   display: flex;
   gap: 20px;
@@ -197,7 +197,7 @@ body{
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 1rem;
+  margin-top: 3rem;
 }
 
 .Submissions-acquirer button {
@@ -338,6 +338,22 @@ body{
   flex-direction: column;
   align-items: flex-start;
 }
+
+.report-filters{
+  border-radius: 3px;
+  padding: 10px;
+  padding-left: 30px;
+  margin-bottom: 20px;
+  display: flex;
+  gap: 20px;
+  flex-direction: row;
+  align-items: center;
+}
+
+.small-datepicker .MuiInputBase-root {
+  font-size: 16px; /* Adjust the font size */
+}
+
 
 
 

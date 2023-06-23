@@ -288,7 +288,7 @@ export default function GlobalPropertiesDialog({
                         defaultMessage="Property Name:"
                       />
                     </label>
-                    <FormControl sx={{ m: 1, minWidth: 250 }} size="small">
+                    <FormControl sx={{ minWidth: 250 }} size="small">
                       <InputLabel id="select-prop-name">
                         <FormattedMessage
                           id="property-name-option"
@@ -318,7 +318,7 @@ export default function GlobalPropertiesDialog({
                         defaultMessage="Property Key:"
                       />
                     </label>
-                    <FormControl sx={{ m: 1, minWidth: 250 }} size="small">
+                    <FormControl sx={{ minWidth: 250 }} size="small">
                       <InputLabel id="select-prop-key">
                         <FormattedMessage
                           id="property-key-option"
@@ -371,7 +371,7 @@ export default function GlobalPropertiesDialog({
                       />
                     </label>
 
-                    <FormControl sx={{ m: 1, minWidth: 250 }} size="small">
+                    <FormControl sx={{ minWidth: 250 }} size="small">
                       <InputLabel id="select-institution">
                         <FormattedMessage
                           id="institution-name-option"
