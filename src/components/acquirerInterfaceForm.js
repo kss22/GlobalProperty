@@ -108,8 +108,8 @@ export default function AcquirerInterfaceDialog({
       interfaceCode: interfaceCode,
       interfaceDescription: interfaceDescription,
       key: key,
-      siteId: site,
-      status: status ? 1 : 0,
+      siteId: parseInt(site),
+      status: status ? "1" : "0",
     };
     fetch(`${authentication.SERVER_URL}/v1/routing/acquirer-interface`, {
       method: "POST",
