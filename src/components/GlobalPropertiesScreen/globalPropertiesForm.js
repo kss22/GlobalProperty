@@ -14,11 +14,11 @@ import React, { useEffect, useState } from "react";
 import { FaSave } from "react-icons/fa";
 import { FormattedMessage } from "react-intl";
 import { ToastContainer, toast } from "react-toastify";
-import Loading from "./loading";
-import Failed from "./failedComponent";
-import * as authentication from "../utils/authentication";
-import validations from "../utils/validations";
-import { States } from "../utils/constants";
+import Loading from "../loading";
+import Failed from "../failedComponent";
+import * as authentication from "../../utils/authentication";
+import validations from "../../utils/validations";
+import { States } from "../../utils/constants";
 
 export default function GlobalPropertiesDialog({
   open,

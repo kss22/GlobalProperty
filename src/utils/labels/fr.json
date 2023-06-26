@@ -39,5 +39,20 @@
     "add-acquirer-interface-button": "Ajouter une interface acquéreur",
     "initial-status-option": "Choisissez le statut initial",
     "branch-name-option": "Choisissez le nom de la succursale",
-    "branch-column": "La Branche:"
+    "branch-column": "La Branche:",
+    "bin-column": "Poubelle: ",
+    "card-name": "Nom de la carte",
+    "currency-code": "Code de devise",
+    "currency-code-choose": "Choisissez le code de devise",
+    "country-code":"Code postal",
+    "country-code-choose":"Choisir l'indicatif du pays",
+    "bank-name": "Nom de banque",
+    "network": "Réseau",
+    "network-choose": "Choisissez le réseau",
+    "chip-option-type": "Type d'option de puce",
+    "chip-option-type-choose": "Choisir le type d'option de puce",
+    "card-authentication-mailbox": "Boîte aux lettres d'authentification de carte",
+    "card-authentication-mailbox-option": "Choisir la boîte aux lettres d'authentification de carte",
+    "pin-verification-parameter-id": "ID de paramètre de vérification du code PIN",
+    "pin-verification-parameter-id-option": "Choisissez l'ID de paramètre de vérification du code PIN"
 }

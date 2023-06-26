@@ -2,7 +2,7 @@ import { Button, Tooltip } from "@mui/material";
 import { saveLanguage } from "../../localStorage";
 import { FaPlus } from "react-icons/fa";
 import { FormattedMessage } from "react-intl";
-import EcomLayoutsTable from "../../components/ecomLayoutDataTable";
+import EcomLayoutsTable from "../../components/EcomScreens/ecomLayoutDataTable";
 
 const ListEcomLayout = () => {
   return (
@@ -37,6 +37,16 @@ const ListEcomLayout = () => {
           Acquirer Interfaces
         </Button>
       </Tooltip>
+      <Tooltip title="Go to interface bin">
+        <Button
+          onClick={() => {
+            window.location.href = "/interfaceBin";
+          }}
+          variant="text"
+        >
+          Interface Bin
+        </Button>
+      </Tooltip>
       <Tooltip title="Go to reports">
         <Button
           onClick={() => {
@@ -47,6 +57,7 @@ const ListEcomLayout = () => {
           Reports
         </Button>
       </Tooltip>
+
       <Tooltip title="French">
         <Button
           onClick={() => {

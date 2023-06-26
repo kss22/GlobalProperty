@@ -15,14 +15,13 @@ import React, { useEffect, useState } from "react";
 import { FaSave } from "react-icons/fa";
 import { FormattedMessage } from "react-intl";
 import { ToastContainer, toast } from "react-toastify";
-import Loading from "./loading";
-import Failed from "./failedComponent";
-import * as authentication from "../utils/authentication";
-import { States } from "../utils/constants";
-import validations from "../utils/validations";
+import Loading from "../loading";
+import Failed from "../failedComponent";
+import * as authentication from "../../utils/authentication";
+import { States } from "../../utils/constants";
+import validations from "../../utils/validations";
 
-
-export default function AcquirerDialog({
+export default function AcquirerInterfaceDialog({
   open,
   onClose,
   title,
@@ -32,35 +31,43 @@ export default function AcquirerDialog({
 }) {
   const [loading, setLoading] = useState(false);
   const [failed, setFailed] = useState(false);
-  const [data, setData] = useState([]);
-  const [inst, setInst] = useState([]);
-  const [interfaces, setInterfaces] = useState([]);
-  const [interfaceId, setInterfaceId] = useState("");
-  const [instId, setInstId] = useState("");
   const [status, setStatus] = useState(false);
-  const [acquirerCode, setAcquirerCode] = useState("");
-  const [acquirerDesc, setAcquirerDesc] = useState("");
-  const [zpk, setZpk] = useState("");
+  const [interfaceCode, setInterfaceCode] = useState("");
+  const [interfaceDescription, setInterfaceDescription] = useState("");
+  const [key, setKey] = useState("");
+  const [initialStatus, setInitialStatus] = useState("");
+  const [checkDigit, setCheckDigit] = useState("");
+  const [site, setSite] = useState("");
+
   const [codeValidationError, setCodeValidationError] = useState(false);
   const [codeValidationMessage, setCodeValidationMessage] = useState("");
 
   const [descValidationError, setDescValidationError] = useState(false);
   const [descValidationMessage, setDescValidationMessage] = useState("");
 
-  const [zpkValidationError, setZpkValidationError] = useState(false);
-  const [zpkValidationMessage, setZpkValidationMessage] = useState("");
+  const [keyValidationError, setKeyValidationError] = useState(false);
+  const [keyValidationMessage, setKeyValidationMessage] = useState("");
+
+  const [checkValueValidationError, setCheckValueValidationError] = useState(false);
+  const [checkValueValidationMessage, setCheckValueValidationMessage] = useState("");
+
+  const [siteValidationError, setSiteValidationError] = useState(false);
+  const [siteValidationMessage, setSiteValidationMessage] = useState("");
 
   useEffect(() => {
     if (id) {
       setLoading(true);
-      fetch(`${authentication.SERVER_URL}/v1/config/acquirers/${id}`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${authentication.token}`,
-          branchId: "1",
-          instId: "1",
-        },
-      })
+      fetch(
+        `${authentication.SERVER_URL}/v1/routing/acquirer-interface/${id}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${authentication.token}`,
+            branchId: "1",
+            instId: "1",
+          },
+        }
+      )
         .then((response) => {
           if (response.status === 401) {
             setFailed(true);
@@ -68,11 +75,13 @@ export default function AcquirerDialog({
           return response.json();
         })
         .then((data) => {
-          setData(data);
-          setAcquirerCode(data.acquirerCode);
-          setAcquirerDesc(data.acquirerDesc);
-          setZpk(data.zpk);
-          setStatus(data.acquirerStatus);
+          setInterfaceCode(data.interfaceCode);
+          setInterfaceDescription(data.interfaceDescription);
+          setKey(data.key);
+          setStatus(data.status);
+          setInitialStatus(data.initStatus);
+          setCheckDigit(data.checkValue);
+          setSite(data.siteId);
 
           console.log(data);
         })
@@ -81,26 +90,28 @@ export default function AcquirerDialog({
         })
         .catch((error) => console.error(error));
     } else {
-      setData([]);
-      setInterfaceId("");
-      setInstId("");
+      setInterfaceCode("");
+      setInterfaceDescription("");
       setStatus(false);
-      setAcquirerCode("");
-      setAcquirerDesc("");
-      setZpk("");
+      setKey("");
+      setInitialStatus("");
+      setCheckDigit("");
+      setSite("");
     }
   }, [id]);
 
   function handleSubmit() {
     let post = {
-      acquirerCode: acquirerCode,
-      acquirerDesc: acquirerDesc,
-      acquirerId: id ? id : 0,
-      acquirerInterfaceId: interfaceId,
-      acquirerStatus: status ? 1 : 0,
-      zpk: zpk,
+      acquirerInterfaceId: id ? id : 0,
+      checkValue: checkDigit,
+      initStatus: initialStatus,
+      interfaceCode: interfaceCode,
+      interfaceDescription: interfaceDescription,
+      key: key,
+      siteId: parseInt(site),
+      status: status ? "1" : "0",
     };
-    fetch(`${authentication.SERVER_URL}/v1/config/acquirers`, {
+    fetch(`${authentication.SERVER_URL}/v1/routing/acquirer-interface`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -112,7 +123,7 @@ export default function AcquirerDialog({
     })
       .then((response) => {
         if (response.ok) {
-          toast.success("Acquirer added successfully", {
+          toast.success("Acquirer Interface added successfully", {
             position: "top-center",
             autoClose: 5000,
             hideProgressBar: false,
@@ -155,69 +166,25 @@ export default function AcquirerDialog({
         });
       });
   }
-  useEffect(() => {
-    setLoading(true);
-    fetch(`${authentication.SERVER_URL}/v1/config/institutions/user/1`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${authentication.token}`,
-        branchId: "1",
-        instId: "1",
-      },
-    })
-      .then((response) => {
-        if (response.status === 401) {
-          setFailed(true);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log(data);
-        setInst(data);
-      });
-
-    fetch(`${authentication.SERVER_URL}/v1/routing/acquirer-interface/active`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${authentication.token}`,
-        branchId: "1",
-        instId: "1",
-      },
-    })
-      .then((response) => {
-        if (response.status === 401) {
-          setFailed(true);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log(data);
-        setInterfaces(data);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, []);
-
 
   const handleChangeCode = (e) => {
     setCodeValidationError(false);
 
     const value = e.target.value;
 
-    validations.acquirersCode
+    validations.acquirerInterfaceCode
       .validate(value)
       .then(() => {
-        setAcquirerCode(value);
+        setInterfaceCode(value);
         setCodeValidationError(false);
         setCodeValidationMessage(null);
       })
       .catch((error) => {
         setCodeValidationError(true);
         setCodeValidationMessage(error.message);
-        if (error.message === "Code is required") {
-          setAcquirerCode(value);
-        }
+        if (error.message === "Interface Code is required") {
+          setInterfaceCode(value);
+        } 
       });
   };
 
@@ -226,10 +193,10 @@ export default function AcquirerDialog({
 
     const value = e.target.value;
 
-    validations.acquirersDesc
+    validations.acquirerInterfaceDesc
       .validate(value)
       .then(() => {
-        setAcquirerDesc(value);
+        setInterfaceDescription(value);
         setDescValidationError(false);
         setDescValidationMessage(null);
       })
@@ -237,32 +204,78 @@ export default function AcquirerDialog({
         setDescValidationError(true);
         setDescValidationMessage(error.message);
 
-        if (error.message === "Description is required") {
-          setAcquirerDesc(value);
+        if (error.message === "Interface Description is required") {
+          setInterfaceDescription(value);
         }
       });
   };
-
-  const handleChangeZpk = (e) => {
-    setZpkValidationError(false);
+  const handleChangeKey = (e) => {
+    setKeyValidationError(false);
 
     const value = e.target.value;
 
-    validations.acquirersDesc
+    validations.acquirerInterfaceKey
       .validate(value)
       .then(() => {
-        setZpk(value);
-        setZpkValidationError(false);
-        setZpkValidationMessage(null);
+        setKey(value);
+        setKeyValidationError(false);
+        setKeyValidationMessage(null);
       })
       .catch((error) => {
-        setZpkValidationError(true);
-        setZpkValidationMessage(error.message);
-        if (error.message === "Zpk is required") {
-          setZpk(value);
+        setKeyValidationError(true);
+        setKeyValidationMessage(error.message);
+        if (error.message === "Interface Key is required") {
+          setKey(value);
+        }else if (error.message === "Interface Key must be of length 32"){
+          setKey(value);
         }
       });
   };
+
+  const handleChangeCheckValue = (e) => {
+    setCheckValueValidationError(false);
+
+    const value = e.target.value;
+
+    validations.acquirerInterfaceCheckValue
+      .validate(value)
+      .then(() => {
+        setCheckDigit(value);
+        setCheckValueValidationError(false);
+        setCheckValueValidationMessage(null);
+      })
+      .catch((error) => {
+        setCheckValueValidationError(true);
+        setCheckValueValidationMessage(error.message);
+
+        if (error.message === "Interface check value is required") {
+          setCheckDigit(value);
+        }
+      });
+  };
+
+  const handleChangeSite = (e) => {
+    setSiteValidationError(false);
+
+    const value = e.target.value;
+
+    validations.acquirerInterfaceSite
+      .validate(value)
+      .then(() => {
+        setSite(value);
+        setSiteValidationError(false);
+        setSiteValidationMessage(null);
+      })
+      .catch((error) => {
+        setSiteValidationError(true);
+        setSiteValidationMessage(error.message);
+
+        if (error.message === "Interface site id is required") {
+          setSite(value);
+        }
+      });
+  };
+  
 
   return (
     <div>
@@ -293,21 +306,21 @@ export default function AcquirerDialog({
                   <div className="left-container-acquirer">
                     <label className="required">
                       <FormattedMessage
-                        id="code-column"
-                        defaultMessage="Code:"
+                        id="interface-code-column"
+                        defaultMessage="Interface Code"
                       />
                     </label>
                     <TextField
                       variant="outlined"
-                      label="Enter Acquirer Code"
+                      label="Enter Interface Code"
                       type="text"
                       sx={{width: 220}}
                       size="small"
                       inputProps={{
-                        maxLength: 20,
+                        maxLength: 10,
                       }}
                       className="MuiTextField-root"
-                      value={acquirerCode}
+                      value={interfaceCode}
                       error={codeValidationError}
                       helperText={codeValidationMessage}
                       onChange={(e) => {
@@ -322,15 +335,15 @@ export default function AcquirerDialog({
                     </label>
                     <TextField
                       variant="outlined"
-                      label="Enter Acquirer Description"
+                      label="Enter Interface Description"
                       type="text"
                       sx={{width: 220}}
                       size="small"
                       inputProps={{
-                        maxLength: 50,
+                        maxLength: 100,
                       }}
                       className="MuiTextField-root"
-                      value={acquirerDesc}
+                      value={interfaceDescription}
                       error={descValidationError}
                       helperText={descValidationMessage}
                       onChange={(e) => {
@@ -338,11 +351,11 @@ export default function AcquirerDialog({
                       }}
                     />
                     <label className="required">
-                      <FormattedMessage id="zpk-column" defaultMessage="ZPK" />
+                      <FormattedMessage id="key-column" defaultMessage="Key" />
                     </label>
                     <TextField
                       variant="outlined"
-                      label="Enter Acquirer ZPK"
+                      label="Enter Interface Key"
                       type="text"
                       sx={{width: 220}}
                       size="small"
@@ -350,83 +363,97 @@ export default function AcquirerDialog({
                         maxLength: 32,
                       }}
                       className="MuiTextField-root"
-                      value={zpk}
-                      error={zpkValidationError}
-                      helperText={zpkValidationMessage}
-                      onChange={(e) => {handleChangeZpk(e);}}
+                      value={key}
+                      error={keyValidationError}
+                      helperText={keyValidationMessage}
+                      onChange={(e) => {
+                        handleChangeKey(e);
+                      }}
                     />
+                    <label className="required">
+                      <FormattedMessage
+                        id="initial-status-column"
+                        defaultMessage="Insitial Status"
+                      />
+                    </label>
+                    <FormControl sx={{ minWidth: 220 }} size="small">
+                      
+                        <InputLabel id="select-inst-name">
+                          <FormattedMessage
+                            id="initial-status-option"
+                            defaultMessage="Choose Initial Status"
+                          />
+                        </InputLabel>
+                      
+
+                      <Select
+                        labelId="select-inst-name"
+                        value={initialStatus}
+                        label="Institution Name"
+                        onChange={(e) => {
+                          setInitialStatus(e.target.value);
+                        }}
+                      >
+                        
+                          <MenuItem value={"U"}>
+                            U
+                          </MenuItem>
+                          <MenuItem value={"D"}>
+                            D
+                          </MenuItem>
+                        
+                      </Select>
+                    </FormControl>
                   </div>
                   <div className="right-container-acquirer">
                     <label className="required">
                       <FormattedMessage
-                        id="isntitution-column"
-                        defaultMessage="Institution"
+                        id="check-digit-column"
+                        defaultMessage="Check digit"
                       />
                     </label>
-                    <FormControl sx={{  minWidth: 220 }} size="small">
-                      {id ? (
-                        <InputLabel id="select-inst-name">
-                          {data.instName}
-                        </InputLabel>
-                      ) : (
-                        <InputLabel id="select-inst-name">
-                          <FormattedMessage
-                            id="institution-name-option"
-                            defaultMessage="Choose Institution Name"
-                          />
-                        </InputLabel>
-                      )}
-
-                      <Select
-                        labelId="select-inst-name"
-                        value={instId}
-                        label="Institution Name"
-                        onChange={(e) => {
-                          setInstId(e.target.value);
-                        }}
-                      >
-                        {inst.map((item) => (
-                          <MenuItem value={item.instId}>
-                            {item.instName}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
+                    <TextField
+                      variant="outlined"
+                      label="Enter Check Digit"
+                      type="text"
+                      sx={{width: 220}}
+                      size="small"
+                      inputProps={{
+                        maxLength: 4,
+                      }}
+                      className="MuiTextField-root"
+                      value={checkDigit}
+                      error={checkValueValidationError}
+                      helperText={checkValueValidationMessage}
+                      onChange={(e) => {
+                        // handleChangeZpk(e);
+                        handleChangeCheckValue(e);
+                      }}
+                    />
                     <label className="required">
                       <FormattedMessage
-                        id="interface-column"
-                        defaultMessage="Interface"
+                        id="site-column"
+                        defaultMessage="Site"
                       />
                     </label>
-                    <FormControl sx={{ minWidth: 220 }} size="small">
-                      {id ? (
-                        <InputLabel id="select-interface">
-                          {data.interfaceCode}
-                        </InputLabel>
-                      ) : (
-                        <InputLabel id="select-interface">
-                          <FormattedMessage
-                            id="interface-option"
-                            defaultMessage="Choose Interface"
-                          />
-                        </InputLabel>
-                      )}
-
-                      <Select
-                        labelId="select-interface-name"
-                        value={interfaceId}
-                        label="Interface"
-                        onChange={(e) => {
-                          setInterfaceId(e.target.value);
-                        }}
-                      >
-                        {interfaces.map((item) => (
-                          <MenuItem value={item.acquirerInterfaceId}>
-                            {item.interfaceCode}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
+                    <TextField
+                      variant="outlined"
+                      label="Enter Interface Site"
+                      type="text"
+                      sx={{width: 220}}
+                      size="small"
+                      inputProps={{
+                        maxLength: 8,
+                      }}
+                      className="MuiTextField-root"
+                      value={site}
+                      error={siteValidationError}
+                      helperText={siteValidationMessage}
+                      onChange={(e) => {
+                        // handleChangeZpk(e);
+                        handleChangeSite(e);
+                      }}
+                    />
                     <label className="required">
                       <FormattedMessage
                         id="enable-disable-label"
@@ -448,7 +475,7 @@ export default function AcquirerDialog({
                       />
                     </Button>
                   </Tooltip>
-                  <Tooltip title="Create Acquirer">
+                  <Tooltip title="Create Interface">
                     <Button
                       variant="contained"
                       endIcon={<FaSave className="save" />}

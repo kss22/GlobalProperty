@@ -4,9 +4,9 @@ import { saveLanguage } from "../../localStorage";
 import { Button, Tooltip } from "@mui/material";
 import { FormattedMessage } from "react-intl";
 import { FaPlus } from "react-icons/fa";
-import AcquirerInterfaceTable from "../../components/acquirerInterfaceDataTable";
+import AcquirerInterfaceTable from "../../components/AcquirerInterfaceScreen/acquirerInterfaceDataTable";
 import { States } from "../../utils/constants";
-import AcquirerInterfaceDialog from "../../components/acquirerInterfaceForm";
+import AcquirerInterfaceDialog from "../../components/AcquirerInterfaceScreen/acquirerInterfaceForm";
 
 const AcquirerInterfaceScreen = () => {
   let [authState, setAuthState] = useState(States.PENDING);
@@ -42,6 +42,16 @@ const AcquirerInterfaceScreen = () => {
           variant="text"
         >
           Acquirers
+        </Button>
+      </Tooltip>
+      <Tooltip title="Go to interface bin">
+        <Button
+          onClick={() => {
+            window.location.href = "/interfaceBin";
+          }}
+          variant="text"
+        >
+          Interface Bin
         </Button>
       </Tooltip>
       <Tooltip title="Go to reports">

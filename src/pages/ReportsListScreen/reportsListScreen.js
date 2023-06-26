@@ -136,6 +136,16 @@ const ReportScreen = () => {
           Acquirer Interfaces
         </Button>
       </Tooltip>
+      <Tooltip title="Go to interface bin">
+        <Button
+          onClick={() => {
+            window.location.href = "/interfaceBin";
+          }}
+          variant="text"
+        >
+          Interface Bin
+        </Button>
+      </Tooltip>
       <Tooltip title="French">
         <Button
           onClick={() => {
@@ -161,6 +171,7 @@ const ReportScreen = () => {
       <div>
         <div className="Header">
           <h2>Reports</h2>
+          <br/>
         </div>
         <div className="report-filters">
           <label className="required">

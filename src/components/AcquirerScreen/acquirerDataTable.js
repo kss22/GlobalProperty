@@ -16,13 +16,13 @@ import {
   Tooltip,
 } from "@mui/material";
 import { ToastContainer, toast } from "react-toastify";
-import Loading from "./loading";
-import Failed from "./failedComponent";
+import Loading from "../loading";
+import Failed from "../failedComponent";
 import { FormattedMessage } from "react-intl";
 import { FaBackward, FaEdit, FaForward, FaTrashAlt } from "react-icons/fa";
 import { useEffect, useState } from "react";
-import * as authentication from "../utils/authentication";
-import { States } from "../utils/constants";
+import * as authentication from "../../utils/authentication";
+import { States } from "../../utils/constants";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 

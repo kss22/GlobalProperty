@@ -12,6 +12,7 @@ import ListEcomLayout from "./pages/EcomScreen/ecomListLayout";
 import AcquirerScreen from "./pages/AcquirersScreen/acquirerScreen";
 import AcquirerInterfaceScreen from "./pages/AcquirerInterface/acquirerInterfaceScreen";
 import ReportScreen from "./pages/ReportsListScreen/reportsListScreen";
+import InterfaceBinScreen from "./pages/InterfaceBinScreen/interfaceBinScreen";
 
 function App() {
   const locale = getLanguage();
@@ -72,6 +73,14 @@ function App() {
           element={
             <IntlProvider locale={locale} messages={labels}>
               <ReportScreen />
+            </IntlProvider>
+          }
+        />
+        <Route
+          path="/interfaceBin"
+          element={
+            <IntlProvider locale={locale} messages={labels}>
+              <InterfaceBinScreen />
             </IntlProvider>
           }
         />

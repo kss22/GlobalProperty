@@ -4,8 +4,8 @@ import "../../App.css";
 import { saveLanguage } from "../../localStorage";
 import { FormattedMessage } from "react-intl";
 import { Button, Tooltip } from "@mui/material";
-import AcquirerTable from "../../components/acquirerDataTable";
-import AcquirerDialog from "../../components/acquirerFormDialog";
+import AcquirerTable from "../../components/AcquirerScreen/acquirerDataTable";
+import AcquirerDialog from "../../components/AcquirerScreen/acquirerFormDialog";
 import { States } from "../../utils/constants";
 
 const AcquirerScreen = () => {
@@ -41,6 +41,16 @@ const AcquirerScreen = () => {
           variant="text"
         >
           Acquirer Interfaces
+        </Button>
+      </Tooltip>
+      <Tooltip title="Go to interface bin">
+        <Button
+          onClick={() => {
+            window.location.href = "/interfaceBin";
+          }}
+          variant="text"
+        >
+          Interface Bin
         </Button>
       </Tooltip>
       <Tooltip title="Go to reports">

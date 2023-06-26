@@ -1,7 +1,7 @@
 import React from "react";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { useEffect, useState } from "react";
-import * as authentication from "../utils/authentication";
+import * as authentication from "../../utils/authentication";
 import { FormattedMessage } from "react-intl";
 import {
   Button,
@@ -16,8 +16,8 @@ import {
   Tooltip,
 } from "@mui/material";
 import { ToastContainer, toast } from "react-toastify";
-import Loading from "./loading";
-import Failed from "./failedComponent";
+import Loading from "../loading";
+import Failed from "../failedComponent";
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 

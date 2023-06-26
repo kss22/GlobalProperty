@@ -1,7 +1,7 @@
 import React from "react";
 import { FaBackward, FaEdit, FaForward, FaTrashAlt } from "react-icons/fa";
 import { useEffect, useState } from "react";
-import * as authentication from "../utils/authentication";
+import * as authentication from "../../utils/authentication";
 import { FormattedMessage } from "react-intl";
 import {
   Button,
@@ -18,12 +18,12 @@ import {
   TableRow,
   Tooltip,
 } from "@mui/material";
-import Failed from "../components/failedComponent";
+import Failed from "../failedComponent";
 import { ToastContainer, toast } from "react-toastify";
-import Loading from "./loading";
+import Loading from "../loading";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
-import { States } from "../utils/constants";
+import { States } from "../../utils/constants";
 
 const GlobalPropertiesTable = ({ setAuthState, setId }) => {
   const [data, setData] = useState([]);

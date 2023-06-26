@@ -11,7 +11,7 @@ import MenuItem from "@mui/material/MenuItem";
 import DragHandleIcon from "@mui/icons-material/DragHandle";
 import { IconButton } from "@mui/material";
 import { FaTrash } from "react-icons/fa";
-import validations from "../utils/validations";
+import validations from "../../utils/validations";
 
 const ListItemComponent = ({
   value,

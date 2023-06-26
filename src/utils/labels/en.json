@@ -39,7 +39,22 @@
     "add-acquirer-interface-button": "Add Acquirer Interface",
     "initial-status-option": "Choose Initial Status",
     "branch-name-option": "Choose Branch Name",
-    "branch-column": "Branch:"
+    "branch-column": "Branch:",
+    "bin-column": "Bin: ",
+    "card-name": "Card Name",
+    "currency-code": "Currency Code",
+    "currency-code-choose": "Choose Currency Code",
+    "country-code":"Country Code",
+    "country-code-choose": "Choose Country Code",
+    "bank-name": "Bank Name",
+    "network": "Network",
+    "network-choose": "Choose Network",
+    "chip-option-type": "Chip Option Type",
+    "chip-option-type-choose": "Choose Chip Option Type",
+    "card-authentication-mailbox": "Card Authentication Mailbox",
+    "card-authentication-mailbox-option": "Choose Card Athentication Mailbox",
+    "pin-verification-parameter-id": "PIN Verification Parameter ID",
+    "pin-verification-parameter-id-option": "Choose PIN Verification Parameter ID"
     
     
 }

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import "../../App.css";
-import GlobalPropertiesTable from "../../components/globalPropertiesDataTable";
+import GlobalPropertiesTable from "../../components/GlobalPropertiesScreen/globalPropertiesDataTable";
 import { saveLanguage } from "../../localStorage";
 import { FormattedMessage } from "react-intl";
 import { Button, Tooltip } from "@mui/material";
 import { States } from "../../utils/constants";
-import GlobalPropertiesDialog from "../../components/globalPropertiesForm";
+import GlobalPropertiesDialog from "../../components/GlobalPropertiesScreen/globalPropertiesForm";
 import 'react-toastify/dist/ReactToastify.css';
 
 const GlobalPropertiesScreen = () => {
@@ -42,6 +42,16 @@ const GlobalPropertiesScreen = () => {
           variant="text"
         >
           Acquirer Interfaces
+        </Button>
+      </Tooltip>
+      <Tooltip title="Go to interface bin">
+        <Button
+          onClick={() => {
+            window.location.href = "/interfaceBin";
+          }}
+          variant="text"
+        >
+          Interface Bin
         </Button>
       </Tooltip>
       <Tooltip title="Go to reports">

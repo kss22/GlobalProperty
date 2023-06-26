@@ -11,16 +11,16 @@ import {
   Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import * as authentication from "../utils/authentication";
+import * as authentication from "../../utils/authentication";
 import { useParams } from "react-router-dom";
 import { FormattedMessage } from "react-intl";
 import { FaSave } from "react-icons/fa";
-import Loading from "./loading";
-import Failed from "./failedComponent";
+import Loading from "../loading";
+import Failed from "../failedComponent";
 import { ToastContainer, toast } from "react-toastify";
 import ElementList from "./ecomElementsList";
 import EcomDisplayElementList from "./ecomDisplayElementList";
-import validations from "../utils/validations";
+import validations from "../../utils/validations";
 
 const EcomLayoutForm = () => {
   const { ecomLayoutId } = useParams();
