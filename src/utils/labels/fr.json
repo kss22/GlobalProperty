@@ -54,5 +54,10 @@
     "card-authentication-mailbox": "Boîte aux lettres d'authentification de carte",
     "card-authentication-mailbox-option": "Choisir la boîte aux lettres d'authentification de carte",
     "pin-verification-parameter-id": "ID de paramètre de vérification du code PIN",
-    "pin-verification-parameter-id-option": "Choisissez l'ID de paramètre de vérification du code PIN"
+    "pin-verification-parameter-id-option": "Choisissez l'ID de paramètre de vérification du code PIN",
+    "bin-type-option": "Choisir le type de bac",
+    "action-on-timeout-option":"Choisir une action",
+    "echo-test-option": "Choisissez le test d'écho",
+    "auth-flah-option": "Choisissez le drapeau d'autorisation",
+    "debit-credit-option": "Choisissez Type"
 }

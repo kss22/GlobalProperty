@@ -54,7 +54,12 @@
     "card-authentication-mailbox": "Card Authentication Mailbox",
     "card-authentication-mailbox-option": "Choose Card Athentication Mailbox",
     "pin-verification-parameter-id": "PIN Verification Parameter ID",
-    "pin-verification-parameter-id-option": "Choose PIN Verification Parameter ID"
+    "pin-verification-parameter-id-option": "Choose PIN Verification Parameter ID",
+    "bin-type-option": "Choose Bin Type",
+    "action-on-timeout-option":"Choose Action",
+    "echo-test-option": "Choose Echo Test",
+    "auth-flah-option":"Choose Authorization Flag",
+    "debit-credit-option": "Choose Type"
     
     
 }

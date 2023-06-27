@@ -11,12 +11,68 @@ import {
 } from "@mui/material";
 import { FormattedMessage } from "react-intl";
 import { ToastContainer } from "react-toastify";
+import validations from "../../utils/validations";
 
-const InterfaceBinHeader = ({ bin, setBin, desc, setDesc, setInstIdParent }) => {
+const InterfaceBinHeader = ({
+  bin,
+  setBin,
+  desc,
+  setDesc,
+  setInstIdParent,
+}) => {
   const [inst, setInst] = useState([]);
   const [instId, setInstId] = useState("");
   const [loading, setLoading] = useState(false);
   const [failed, setFailed] = useState(false);
+  const [descValidationError, setDescValidationError] = useState("");
+  const [descValidationMessage, setDescValidationMessage] = useState("");
+  const [binValidationError, setBinValidationError] = useState("");
+  const [binValidationMessage, setBinValidationMessage] = useState("");
+
+
+  const handleChangeBin = (e) => {
+    setDescValidationError(false);
+
+    const value = e.target.value;
+
+    validations.interfaceBinUser
+      .validate(value)
+      .then(() => {
+        setBin(value);
+        setBinValidationError(false);
+        setBinValidationMessage(null);
+      })
+      .catch((error) => {
+        setBinValidationError(true);
+        setBinValidationMessage(error.message);
+
+        if (error.message === "User Bin is required") {
+          setBin(value);
+        }
+      });
+  };
+
+  const handleChangeDesc = (e) => {
+    setDescValidationError(false);
+
+    const value = e.target.value;
+
+    validations.interfaceBinDesc
+      .validate(value)
+      .then(() => {
+        setDesc(value);
+        setDescValidationError(false);
+        setDescValidationMessage(null);
+      })
+      .catch((error) => {
+        setDescValidationError(true);
+        setDescValidationMessage(error.message);
+
+        if (error.message === "Description is required") {
+          setDesc(value);
+        }
+      });
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -88,12 +144,13 @@ const InterfaceBinHeader = ({ bin, setBin, desc, setDesc, setInstIdParent }) => 
               <TextField
                 variant="outlined"
                 label="Enter Bin Value"
+                className="MuiTextField-root"
                 type="text"
                 size="small"
-                //   error={validationError}
-                //   helperText={validationMessage}
+                  error={binValidationError}
+                  helperText={binValidationMessage}
                 value={bin}
-                onChange={(e) => setBin(e.target.value)}
+                onChange={handleChangeBin}
               />
 
               <label className="required">
@@ -106,11 +163,12 @@ const InterfaceBinHeader = ({ bin, setBin, desc, setDesc, setInstIdParent }) => 
                 variant="outlined"
                 label="Enter Description"
                 type="text"
+                className="MuiTextField-root"
                 size="small"
-                //   error={validationError}
-                //   helperText={validationMessage}
+                error={descValidationError}
+                helperText={descValidationMessage}
                 value={desc}
-                onChange={(e) => setDesc(e.target.value)}
+                onChange={handleChangeDesc}
               />
             </div>
           )}

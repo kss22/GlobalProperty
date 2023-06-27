@@ -1,5 +1,5 @@
 import {
-  Checkbox,
+  Switch,
   FormControl,
   FormControlLabel,
   InputLabel,
@@ -8,6 +8,8 @@ import {
   TextField,
 } from "@mui/material";
 import { FormattedMessage } from "react-intl";
+import validations from "../../utils/validations";
+import { useState } from "react";
 
 const PageTwo = ({
   mailbox,
@@ -33,8 +35,105 @@ const PageTwo = ({
   sendReversals,
   setSendReversals,
   duplicateTranCheckAsIssuer,
-  setDuplicateTranCheckAsIssuer
+  setDuplicateTranCheckAsIssuer,
 }) => {
+  const [mailboxValidationError, setMailboxValidationError] = useState("");
+  const [mailboxValidationMessage, setMailboxValidationMessage] = useState("");
+  const [portValidationError, setPortValidationError] = useState("");
+  const [portValidationMessage, setPortNameValidationMessage] = useState("");
+  const [timeoutValidationError, setTimeoutValidationError] = useState("");
+  const [timeoutValidationMessage, setTimeoutValidationMessage] = useState("");
+  const [authServerValidationError, setAuthServerValidationError] = useState("");
+  const [authServerValidationMessage, setAuthServerValidationMessage] = useState("");
+
+  const handleChangeMailbox = (e) => {
+    setMailboxValidationError(false);
+
+    const value = e.target.value;
+
+    validations.interfaceBinMailbox
+      .validate(value)
+      .then(() => {
+        setMailbox(value);
+        setMailboxValidationError(false);
+        setMailboxValidationMessage(null);
+      })
+      .catch((error) => {
+        setMailboxValidationError(true);
+        setMailboxValidationMessage(error.message);
+
+        if (error.message === "MailBox is required") {
+          setMailbox(value);
+        }
+      });
+  };
+
+  const handleChangePort = (e) => {
+    setPortValidationError(false);
+
+    const value = e.target.value;
+
+    validations.interfaceBinPort
+      .validate(value)
+      .then(() => {
+        setPort(value);
+        setPortValidationError(false);
+        setPortNameValidationMessage(null);
+      })
+      .catch((error) => {
+        setPortValidationError(true);
+        setPortNameValidationMessage(error.message);
+
+        if (error.message === "Port is required") {
+          setPort(value);
+        }
+      });
+  };
+
+  const handleChangeTimeout = (e) => {
+    setTimeoutValidationError(false);
+
+    const value = e.target.value;
+
+    validations.interfaceBinTimeOut
+      .validate(value)
+      .then(() => {
+        setTimeoutValue(value);
+        setTimeoutValidationError(false);
+        setTimeoutValidationMessage(null);
+      })
+      .catch((error) => {
+        setTimeoutValidationError(true);
+        setTimeoutValidationMessage(error.message);
+
+        if (error.message === "TimeOut is required") {
+          setTimeoutValue(value);
+        }
+      });
+  };
+
+  const handleChangeAuthServer = (e) => {
+    setAuthServerValidationError(false);
+
+    const value = e.target.value;
+
+    validations.interfaceBinAuthServer
+      .validate(value)
+      .then(() => {
+        setAuthorizationServer(value);
+        setAuthServerValidationError(false);
+        setAuthServerValidationMessage(null);
+      })
+      .catch((error) => {
+        setAuthServerValidationError(true);
+        setAuthServerValidationMessage(error.message);
+
+        if (error.message === "Auth Server is required") {
+          setAuthorizationServer(value);
+        }
+      });
+  };
+
   return (
     <div className="Entries">
       <div className="left-container">
@@ -48,11 +147,9 @@ const PageTwo = ({
             size="small"
             className="MuiTextField-root"
             value={mailbox}
-            //   error={codeValidationError}
-            //   helperText={codeValidationMessage}
-            onChange={(e) => {
-              setMailbox(e.target.value);
-            }}
+            error={mailboxValidationError}
+            helperText={mailboxValidationMessage}
+            onChange={handleChangeMailbox}
           />
         </div>
         <div className="row">
@@ -65,25 +162,23 @@ const PageTwo = ({
             size="small"
             className="MuiTextField-root"
             value={port}
-            //   error={codeValidationError}
-            //   helperText={codeValidationMessage}
-            onChange={(e) => {
-              setPort(e.target.value);
-            }}
+              error={portValidationError}
+              helperText={portValidationMessage}
+            onChange={handleChangePort}
           />
         </div>
         <div className="row">
           <label className="required">BIN TYPE</label>
           <FormControl sx={{ minWidth: 220 }} size="small">
-            <InputLabel id="select-inst-name">
+            <InputLabel id="select-bin-type">
               <FormattedMessage
-                id="initial-status-option"
-                defaultMessage="Choose Initial Status"
+                id="bin-type-option"
+                defaultMessage="Choose Bin Type"
               />
             </InputLabel>
 
             <Select
-              labelId="select-inst-name"
+              labelId="select-bin-type"
               value={binType}
               label="Bin Type"
               onChange={(e) => {
@@ -92,10 +187,13 @@ const PageTwo = ({
             >
               <MenuItem value={0}>Default</MenuItem>
               <MenuItem value={1}>Points to ONUS BIN</MenuItem>
-              <MenuItem value={2}>Points to ONUS BIN for COPAC transactions</MenuItem>
-              <MenuItem value={3}>Points to OFFUS BIN for COPAC transactions</MenuItem>
+              <MenuItem value={2}>
+                Points to ONUS BIN for COPAC transactions
+              </MenuItem>
+              <MenuItem value={3}>
+                Points to OFFUS BIN for COPAC transactions
+              </MenuItem>
               <MenuItem value={4}>No Mapping to existing BIN</MenuItem>
-
             </Select>
           </FormControl>
         </div>
@@ -109,27 +207,25 @@ const PageTwo = ({
             size="small"
             className="MuiTextField-root"
             value={timeoutValue}
-            //   error={codeValidationError}
-            //   helperText={codeValidationMessage}
-            onChange={(e) => {
-              setTimeoutValue(e.target.value);
-            }}
+              error={timeoutValidationError}
+              helperText={timeoutValidationMessage}
+            onChange={handleChangeTimeout}
           />
         </div>
         <div className="row">
           <label className="required">Action on Timeout</label>
           <FormControl sx={{ minWidth: 220 }} size="small">
-            <InputLabel id="select-inst-name">
+            <InputLabel id="select-action-on-timeout">
               <FormattedMessage
-                id="initial-status-option"
-                defaultMessage="Choose Initial Status"
+                id="action-on-timeout-option"
+                defaultMessage="Choose Action"
               />
             </InputLabel>
 
             <Select
-              labelId="select-inst-name"
+              labelId="select-action-on-timeout"
               value={actionOnTimeout}
-              label="Institution Name"
+              label="action-on-timeout"
               onChange={(e) => {
                 setActionOnTimeout(e.target.value);
               }}
@@ -143,17 +239,17 @@ const PageTwo = ({
         <div className="row">
           <label className="required">ECHO TEST</label>
           <FormControl sx={{ minWidth: 220 }} size="small">
-            <InputLabel id="select-inst-name">
+            <InputLabel id="select-echo-test">
               <FormattedMessage
-                id="initial-status-option"
-                defaultMessage="Choose Initial Status"
+                id="echo-test-option"
+                defaultMessage="Choose Echo Test"
               />
             </InputLabel>
 
             <Select
-              labelId="select-inst-name"
+              labelId="select-echo-test"
               value={echoTest}
-              label="Institution Name"
+              label="Echo Test"
               onChange={(e) => {
                 setEchoTest(e.target.value);
               }}
@@ -169,23 +265,23 @@ const PageTwo = ({
         <div className="row">
           <label className="required">AUTHORIZATION FLAG</label>
           <FormControl sx={{ minWidth: 220 }} size="small">
-            <InputLabel id="select-inst-name">
+            <InputLabel id="select-auth-flag">
               <FormattedMessage
-                id="initial-status-option"
-                defaultMessage="Choose Initial Status"
+                id="auth-flah-option"
+                defaultMessage="Choose Authorization Flag"
               />
             </InputLabel>
 
             <Select
-              labelId="select-inst-name"
+              labelId="select-auth-flg"
               value={authorizationFlag}
-              label="Institution Name"
+              label="Authorizaion Flag"
               onChange={(e) => {
                 setAuthorizationFlag(e.target.value);
               }}
             >
               <MenuItem value={"PREA"}>PREA</MenuItem>
-              {/* <MenuItem value={"D"}>D</MenuItem> */}
+              <MenuItem value={"FULL"}>FULL</MenuItem>
             </Select>
           </FormControl>
         </div>
@@ -193,26 +289,24 @@ const PageTwo = ({
           <label className="required">AUTHORIZATION SERVER</label>
           <TextField
             variant="outlined"
-            label="Enter Interface Code"
+            label="Enter Authorization Server"
             type="text"
             sx={{ width: 220 }}
             size="small"
             className="MuiTextField-root"
-              value={authorizationServer}
-            //   error={codeValidationError}
-            //   helperText={codeValidationMessage}
-              onChange={(e) => {
-                setAuthorizationServer(e.target.value);
-              }}
+            value={authorizationServer}
+              error={authServerValidationError}
+              helperText={authServerValidationMessage}
+            onChange={handleChangeAuthServer}
           />
         </div>
         <div className="row">
           <label className="required">DEBIT_CREDIT</label>
           <FormControl sx={{ minWidth: 220 }} size="small">
-            <InputLabel id="select-inst-name">
+            <InputLabel id="select-debit-credit">
               <FormattedMessage
-                id="initial-status-option"
-                defaultMessage="Choose Initial Status"
+                id="debit-credit-option"
+                defaultMessage="Choose Type"
               />
             </InputLabel>
 
@@ -233,31 +327,25 @@ const PageTwo = ({
         <div className="row">
           <label className="required">SEND REVERSALS</label>
           <FormControlLabel
-            onChange={(e)=>setSendReversals(e.target.checked)}
-            control={<Checkbox />}
+            onChange={(e) => setSendReversals(e.target.checked)}
+            control={<Switch />}
             checked={sendReversals}
-            label="YES"
-            labelPlacement="start"
           />
         </div>
         <div className="row">
           <label className="required">REVERSAL TO ISSUER</label>
           <FormControlLabel
-            onChange={(e)=>setReversalToIssuer(e.target.checked)}
-            control={<Checkbox />}
+            onChange={(e) => setReversalToIssuer(e.target.checked)}
+            control={<Switch />}
             checked={reversalToIssuer}
-            label="YES"
-            labelPlacement="start"
           />
         </div>
         <div className="row">
           <label className="required">DUPLICATE TRAN CHECK AS ISSUER</label>
           <FormControlLabel
-            onChange={(e)=>setDuplicateTranCheckAsIssuer(e.target.checked)}
-            control={<Checkbox />}
+            onChange={(e) => setDuplicateTranCheckAsIssuer(e.target.checked)}
+            control={<Switch />}
             checked={duplicateTranCheckAsIssuer}
-            label="YES"
-            labelPlacement="start"
           />
         </div>
       </div>

@@ -1,13 +1,17 @@
 import {
-  Checkbox,
   FormControl,
   FormControlLabel,
   InputLabel,
   MenuItem,
   Select,
+  Switch,
   TextField,
 } from "@mui/material";
+import { useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
+import * as authentication from "../../utils/authentication";
+import validations from "../../utils/validations";
+
 
 const PageOne = ({
   cardName,
@@ -29,29 +33,129 @@ const PageOne = ({
   useKeys,
   setUseKeys,
 }) => {
+  const [countryCodeController, setCountryCodeController] = useState([]);
+  const [currencyCodeController, setCurrencyCodeController] = useState([]);
+  const [data, setData] = useState([]);
+
+  const [cardNameValidationError, setCardNameValidationError] = useState("");
+  const [cardNameValidationMessage, setCardNameValidationMessage] = useState("");
+  const [bankNameValidationError, setBankNameValidationError] = useState("");
+  const [bankNameValidationMessage, setBankNameValidationMessage] = useState("");
+
+
+  const handleChangeCardName = (e) => {
+    setCardNameValidationError(false);
+
+    const value = e.target.value;
+
+    validations.interfaceBinCardName
+      .validate(value)
+      .then(() => {
+        setCardName(value);
+        setCardNameValidationError(false);
+        setCardNameValidationMessage(null);
+      })
+      .catch((error) => {
+        setCardNameValidationError(true);
+        setCardNameValidationMessage(error.message);
+
+        if (error.message === "Card Name is required") {
+          setCardName(value);
+        }
+      });
+  };
+
+  const handleChangeBankName = (e) => {
+    setBankNameValidationError(false);
+
+    const value = e.target.value;
+
+    validations.interfaceBinBankName
+      .validate(value)
+      .then(() => {
+        setBankName(value);
+        setBankNameValidationError(false);
+        setBankNameValidationMessage(null);
+      })
+      .catch((error) => {
+        setBankNameValidationError(true);
+        setBankNameValidationMessage(error.message);
+
+        if (error.message === "Bank Name is required") {
+          setBankName(value);
+        }
+      });
+  };
+
+  useEffect(() => {
+    fetch(`${authentication.SERVER_URL}/v1/lookup/countries/active`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${authentication.token}`,
+        branchId: "1",
+        instId: "1",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setCountryCodeController(data);
+      })
+      .catch((error) => console.log(error));
+
+    fetch(`${authentication.SERVER_URL}/v1/lookup/currencies`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${authentication.token}`,
+        branchId: "1",
+        instId: "1",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setCurrencyCodeController(data);
+      })
+      .catch((error) => console.log(error));
+    fetch(`${authentication.SERVER_URL}/v1/lookup/networktypes/active`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${authentication.token}`,
+        branchId: "1",
+        instId: "1",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setData(data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
   return (
     <div className="Entries">
       <div className="left-container">
         <div className="row">
-          <label className="required"><FormattedMessage id="card-name" defaultMessage="Card Name"/></label>
+          <label className="required">
+            <FormattedMessage id="card-name" defaultMessage="Card Name" />
+          </label>
           <TextField
             variant="outlined"
             label="Enter Card Name"
             type="text"
             sx={{ width: 220 }}
             size="small"
-            
             className="MuiTextField-root"
-              value={cardName}
-              // error={codeValidationError}
-              // helperText={codeValidationMessage}
-              onChange={(e) => {
-                setCardName(e.target.value);
-              }}
+            value={cardName}
+            error={cardNameValidationError}
+            helperText={cardNameValidationMessage}
+            onChange={handleChangeCardName}
           />
         </div>
         <div className="row">
-          <label className="required"><FormattedMessage id="currency-code" defaultMessage="Currency Code"/></label>
+          <label className="required">
+            <FormattedMessage
+              id="currency-code"
+              defaultMessage="Currency Code"
+            />
+          </label>
           <FormControl sx={{ minWidth: 220 }} size="small">
             <InputLabel id="curreny-code">
               <FormattedMessage
@@ -68,13 +172,18 @@ const PageOne = ({
                 setCurrencyCode(e.target.value);
               }}
             >
-              <MenuItem value={818}>818</MenuItem>
-              {/* <MenuItem value={"D"}>D</MenuItem> */}
+              {currencyCodeController.map((item) => (
+                <MenuItem value={item.currencyCode}>
+                  {item.currencyName}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
         </div>
         <div className="row">
-          <label className="required"><FormattedMessage id="country-code" defaultMessage="Country Code"/></label>
+          <label className="required">
+            <FormattedMessage id="country-code" defaultMessage="Country Code" />
+          </label>
           <FormControl sx={{ minWidth: 220 }} size="small">
             <InputLabel id="select-country-code">
               <FormattedMessage
@@ -91,33 +200,35 @@ const PageOne = ({
                 setCountryCode(e.target.value);
               }}
             >
-              <MenuItem value={818}>818</MenuItem>
-              {/* <MenuItem value={"D"}>D</MenuItem> */}
+              {countryCodeController.map((item) => (
+                <MenuItem value={item.countryId}>{item.countryCode}</MenuItem>
+              ))}
             </Select>
           </FormControl>
         </div>
         <div className="row">
-          <label className="required"><FormattedMessage id="bank-name" defaultMessage="Bank Name"/></label>
+          <label className="required">
+            <FormattedMessage id="bank-name" defaultMessage="Bank Name" />
+          </label>
           <TextField
             variant="outlined"
             label="Enter Bank Name"
             type="text"
             sx={{ width: 220 }}
             size="small"
-            
             className="MuiTextField-root"
-              value={bankName}
-            //   error={codeValidationError}
-            //   helperText={codeValidationMessage}
-              onChange={(e) => {
-                setBankName(e.target.value);
-              }}
+            value={bankName}
+              error={bankNameValidationError}
+              helperText={bankNameValidationMessage}
+            onChange={handleChangeBankName}
           />
         </div>
       </div>
       <div className="right-container">
         <div className="row">
-          <label className="required"><FormattedMessage id="network" defaultMessage="Network"/></label>
+          <label className="required">
+            <FormattedMessage id="network" defaultMessage="Network" />
+          </label>
           <FormControl sx={{ minWidth: 220 }} size="small">
             <InputLabel id="select-network">
               <FormattedMessage
@@ -131,16 +242,23 @@ const PageOne = ({
               value={network}
               label="Network"
               onChange={(e) => {
-              setNetwork(e.target.value);
+                setNetwork(e.target.value);
               }}
             >
-              <MenuItem value={426868}>426868</MenuItem>
-              {/* <MenuItem value={"D"}>D</MenuItem> */}
+              {data.map((item)=>(
+                <MenuItem value={item.netTypeId}>{item.netTypeDesc}</MenuItem>
+              ))}
+              
             </Select>
           </FormControl>
         </div>
         <div className="row">
-          <label className="required"><FormattedMessage id="chip-option-type" defaultMessage="Chip Option Type"/></label>
+          <label className="required">
+            <FormattedMessage
+              id="chip-option-type"
+              defaultMessage="Chip Option Type"
+            />
+          </label>
           <FormControl sx={{ minWidth: 220 }} size="small">
             <InputLabel id="select-chip-option-type">
               <FormattedMessage
@@ -157,13 +275,18 @@ const PageOne = ({
                 setChipOptionType(e.target.value);
               }}
             >
-              <MenuItem value={"1   EYYYYY Y"}>Early</MenuItem>
-              <MenuItem value={"1   FYYYYY Y"}>Full</MenuItem>
+              <MenuItem value={"E"}>Early</MenuItem>
+              <MenuItem value={"F"}>Full</MenuItem>
             </Select>
           </FormControl>
         </div>
         <div className="row">
-          <label className="required"><FormattedMessage id="card-authentication-mailbox" defaultMessage="Card Authentication Mailbox"/></label>
+          <label className="required">
+            <FormattedMessage
+              id="card-authentication-mailbox"
+              defaultMessage="Card Authentication Mailbox"
+            />
+          </label>
           <FormControl sx={{ minWidth: 220 }} size="small">
             <InputLabel id="select-card-authentication-mailbox">
               <FormattedMessage
@@ -186,7 +309,12 @@ const PageOne = ({
           </FormControl>
         </div>
         <div className="row">
-          <label className="required"><FormattedMessage id="pin-verification-parameter-id" defaultMessage="PIN Verification Parameter ID"/></label>
+          <label className="required">
+            <FormattedMessage
+              id="pin-verification-parameter-id"
+              defaultMessage="PIN Verification Parameter ID"
+            />
+          </label>
           <FormControl sx={{ minWidth: 220 }} size="small">
             <InputLabel id="select-pin-ver-param-id">
               <FormattedMessage
@@ -211,11 +339,9 @@ const PageOne = ({
         <div className="row">
           <label className="required">USEKEYS</label>
           <FormControlLabel
-            onChange={(e)=>setUseKeys(e.target.checked)}
-            control={<Checkbox />}
+            onChange={(e) => setUseKeys(e.target.checked)}
+            control={<Switch />}
             checked={useKeys}
-            label="YES"
-            labelPlacement="start"
           />
         </div>
       </div>

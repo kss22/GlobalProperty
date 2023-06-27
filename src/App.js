@@ -14,6 +14,7 @@ import AcquirerInterfaceScreen from "./pages/AcquirerInterface/acquirerInterface
 import ReportScreen from "./pages/ReportsListScreen/reportsListScreen";
 import InterfaceBinScreen from "./pages/InterfaceBinScreen/interfaceBinScreen";
 
+
 function App() {
   const locale = getLanguage();
 
@@ -27,63 +28,67 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Authorization />} />
-        <Route
-          path="/listGlobalProperties"
-          element={
-            <IntlProvider locale={locale} messages={labels}>
-              <GlobalPropertiesScreen />
-            </IntlProvider>
-          }
-        />
-        <Route
-          path="/listEcomLayout"
-          element={
-            <IntlProvider locale={locale} messages={labels}>
-              <ListEcomLayout />
-            </IntlProvider>
-          }
-        />
-        <Route
-          path="/addEcomLayout/:ecomLayoutId?"
-          element={
-            <IntlProvider locale={locale} messages={labels}>
-              <AddEcomLayout />
-            </IntlProvider>
-          }
-        />
-        <Route
-          path="/listAcquirers"
-          element={
-            <IntlProvider locale={locale} messages={labels}>
-              <AcquirerScreen />
-            </IntlProvider>
-          }
-        />
-        <Route
-          path="/listAcquirerInterface"
-          element={
-            <IntlProvider locale={locale} messages={labels}>
-              <AcquirerInterfaceScreen />
-            </IntlProvider>
-          }
-        />
-        <Route
-          path="/reports"
-          element={
-            <IntlProvider locale={locale} messages={labels}>
-              <ReportScreen />
-            </IntlProvider>
-          }
-        />
-        <Route
-          path="/interfaceBin"
-          element={
-            <IntlProvider locale={locale} messages={labels}>
-              <InterfaceBinScreen />
-            </IntlProvider>
-          }
-        />
+        
+          <Route path="/" element={<Authorization />} />
+          <Route
+            path="/listGlobalProperties"
+            element={
+              <IntlProvider locale={locale} messages={labels}>
+                
+                <GlobalPropertiesScreen />
+                
+              </IntlProvider>
+            }
+          />
+          <Route
+            path="/listEcomLayout"
+            element={
+              <IntlProvider locale={locale} messages={labels}>
+                <ListEcomLayout />
+              </IntlProvider>
+            }
+          />
+          <Route
+            path="/addEcomLayout/:ecomLayoutId?"
+            element={
+              <IntlProvider locale={locale} messages={labels}>
+                <AddEcomLayout />
+              </IntlProvider>
+            }
+          />
+          <Route
+            path="/listAcquirers"
+            element={
+              <IntlProvider locale={locale} messages={labels}>
+                <AcquirerScreen />
+              </IntlProvider>
+            }
+          />
+          <Route
+            path="/listAcquirerInterface"
+            element={
+              <IntlProvider locale={locale} messages={labels}>
+                <AcquirerInterfaceScreen />
+              </IntlProvider>
+            }
+          />
+          <Route
+            path="/reports"
+            element={
+              <IntlProvider locale={locale} messages={labels}>
+                <ReportScreen />
+              </IntlProvider>
+            }
+          />
+          <Route
+            path="/interfaceBin"
+            element={
+              <IntlProvider locale={locale} messages={labels}>
+                <InterfaceBinScreen />
+              </IntlProvider>
+            }
+          />
+        
       </Routes>
     </BrowserRouter>
   );

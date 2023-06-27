@@ -81,7 +81,7 @@ const InterfaceBinScreen = () => {
         echoTest: echoTest,
         mailbox: mailbox,
         port: port,
-        safInter: "string",
+        safInter: actionOnTimeout,
         timeout: timeoutValue,
       },
       routingSAFRequestDto: {
@@ -97,7 +97,7 @@ const InterfaceBinScreen = () => {
         safAmount: safAmount,
         safFile: useSafFile ? "Y" : "N",
         safLimit: safLimit,
-        safType: "string",
+        safType: typeOfStoreAndForward,
         sinterval: slowInterval,
         verifyResponse: verifyResponse ? "Y" : "N",
       },

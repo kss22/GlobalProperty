@@ -13,6 +13,9 @@ const interfaceDescriptionRegExp = /^[a-zA-Z0-9]+$/;
 const interfaceKeyRegExp = /^[a-zA-Z0-9]+$/;
 const interfaceCheckValueRegExp = /^[a-zA-Z0-9]+$/;
 const interfaceSiteIdRexExp = /^[0-9]+$/;
+const interfaceBinConfSAFAmountRegExp = /^(?:0|[1-9][0-9]*)\.[0-9]+$/;
+const interfaceBinConfSAFLimitRegExp = /^[0-9]+$/;
+const interfaceBinMailboxRegExp = /^[a-zA-Z0-9@.]+( [a-zA-Z0-9@.]+)*$/;
 
 const validations = {
   propertyValue: Yup.string()
@@ -90,6 +93,127 @@ const validations = {
       "Interface site id must be numeric and less than 99,999,999"
     )
     .max(8, "Interface site id must be less than 99,999,999"),
+  interfaceBinConfSAFAmount: Yup.string()
+    .trim()
+    .required("SAF amount is required")
+    .matches(
+      interfaceBinConfSAFAmountRegExp,
+      "SAF amount must be a double value"
+    ),
+  interfaceBinConfSAFLimit: Yup.string()
+    .trim()
+    .required("SAF Limit is required")
+    .matches(
+      interfaceBinConfSAFLimitRegExp,
+      "SAF limit must be a numeric value"
+    ),
+  interfaceBinConfRInterval: Yup.string()
+    .trim()
+    .required("R interval is required")
+    .matches(
+      interfaceBinConfSAFLimitRegExp,
+      "R Interval must be a numeric value"
+    ),
+  interfaceBinConfFInterval: Yup.string()
+    .trim()
+    .required("F interval is required")
+    .matches(
+      interfaceBinConfSAFLimitRegExp,
+      "F Interval must be a numeric value"
+    ),
+  interfaceBinConfSInterval: Yup.string()
+    .trim()
+    .required("S interval is required")
+    .matches(
+      interfaceBinConfSAFLimitRegExp,
+      "S Interval must be a numeric value"
+    ),
+  interfaceBinConfFPercent: Yup.string()
+    .trim()
+    .required("F Percent is required")
+    .matches(
+      interfaceBinConfSAFLimitRegExp,
+      "F Percent must be a numeric value"
+    ),
+  interfaceBinConfNPercent: Yup.string()
+    .trim()
+    .required("N Percent is required")
+    .matches(
+      interfaceBinConfSAFLimitRegExp,
+      "N Percent must be a numeric value"
+    ),
+  interfaceBinConfMaxRetry: Yup.string()
+    .trim()
+    .required("Max Retry is required")
+    .matches(
+      interfaceBinConfSAFLimitRegExp,
+      "Max Retry must be a numeric value"
+    ),
+  interfaceBinConfFileFullSize: Yup.string()
+    .trim()
+    .required("File Full Size is required")
+    .matches(
+      interfaceBinConfSAFLimitRegExp,
+      "File Full Size must be a numeric value"
+    ),
+  interfaceBinConfMaxOut: Yup.string()
+    .trim()
+    .required("Max Out Messages is required")
+    .matches(
+      interfaceBinConfSAFLimitRegExp,
+      "Max Out Messages must be a numeric value"
+    ),
+  interfaceBinUser: Yup.string()
+    .trim()
+    .required("User Bin is required")
+    .matches(
+      interfaceBinConfSAFLimitRegExp,
+      "User Bin must be a numeric string"
+    )
+    .max(10, "User Bin length must be less than 10"),
+  interfaceBinDesc: Yup.string()
+    .trim()
+    .required("Description is required")
+    .matches(
+      ecomLayoutNameRegExp,
+      "Description must be alphanumeric string, allows “-“ and “_”"
+    )
+    .max(30, "Description length must be less than 30"),
+  interfaceBinCardName: Yup.string()
+    .trim()
+    .required("Card Name is required")
+    .matches(propertValueRegExp, "Card Name must be alphanumeric string")
+    .max(10, "Card Name length must be less than 10"),
+  interfaceBinBankName: Yup.string()
+    .trim()
+    .required("Bank Name is required")
+    .matches(
+      ecomLayoutNameRegExp,
+      "Bank Name must be alphanumeric string. The allowed special characters are “-“ and “_”"
+    )
+    .max(22, "Bank Name length must be less than 22"),
+  interfaceBinMailbox: Yup.string()
+    .trim()
+    .required("MailBox is required")
+    .matches(
+      interfaceBinMailboxRegExp,
+      "Mailbox must be alphanumeric string. The allowed special characters are “@” and “.”"
+    )
+    .max(30, "Mailbox length must be less than 30"),
+  interfaceBinPort: Yup.string()
+    .trim()
+    .required("Port is required")
+    .matches(interfaceBinConfSAFLimitRegExp, "Port must be a numeric string")
+    .max(30, "Mailbox length must be less than 30"),
+  interfaceBinTimeOut: Yup.string()
+    .trim()
+    .required("TimeOut is required")
+    .matches(interfaceSiteIdRexExp, "TimeOut must be a numeric value"),
+  interfaceBinAuthServer: Yup.string()
+    .trim()
+    .required("Auth Server is required")
+    .matches(ecomElementLengthRexExp, "Auth Server must be a numeric string")
+    .max(30, "AuthServer length must be less than 30"),
 };
 
 export default validations;
