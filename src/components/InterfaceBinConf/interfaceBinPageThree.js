@@ -43,25 +43,37 @@ const PageThree = ({
   setForwardModePercentage,
 }) => {
   const [rIntervalValidationError, setRIntervalValidationError] = useState("");
-  const [rIntervalValidationMessage, setRIntervalValidationMessage] = useState("");
+  const [rIntervalValidationMessage, setRIntervalValidationMessage] =
+    useState("");
   const [fIntervalValidationError, setFIntervalValidationError] = useState("");
-  const [fIntervalValidationMessage, setFIntervalValidationMessage] = useState("");
+  const [fIntervalValidationMessage, setFIntervalValidationMessage] =
+    useState("");
   const [sIntervalValidationError, setSIntervalValidationError] = useState("");
-  const [sIntervalValidationMessage, setSIntervalValidationMessage] = useState("");
-  const [nPercentageValidationError, setNPercentageValidationError] = useState("");
-  const [nPercentageValidationMessage, setNPercentageValidationMessage] = useState("");
-  const [fPercentageValidationError, setFPercentageValidationError] = useState("");
-  const [fPercentageValidationMessage, setFPercentageValidationMessage] = useState("");
+  const [sIntervalValidationMessage, setSIntervalValidationMessage] =
+    useState("");
+  const [nPercentageValidationError, setNPercentageValidationError] =
+    useState("");
+  const [nPercentageValidationMessage, setNPercentageValidationMessage] =
+    useState("");
+  const [fPercentageValidationError, setFPercentageValidationError] =
+    useState("");
+  const [fPercentageValidationMessage, setFPercentageValidationMessage] =
+    useState("");
   const [maxRetryValidationError, setMaxRetryValidationError] = useState("");
-  const [maxRetryValidationMessage, setMaxRetryValidationMessage] = useState("");
+  const [maxRetryValidationMessage, setMaxRetryValidationMessage] =
+    useState("");
   const [maxoutValidationError, setMaxoutValidationError] = useState("");
   const [maxoutValidationMessage, setMaxoutValidationMessage] = useState("");
-  const [fullFileSizeValidationError, setFullFileSizeValidationError] = useState("");
-  const [fullFileSizeValidationMessage, setFullFileSizeValidationMessage] = useState("");
+  const [fullFileSizeValidationError, setFullFileSizeValidationError] =
+    useState("");
+  const [fullFileSizeValidationMessage, setFullFileSizeValidationMessage] =
+    useState("");
   const [safAmountValidationError, setSafAmountValidationError] = useState("");
-  const [safAmountValidationMessage, setSafAmountValidationMessage] = useState("");
+  const [safAmountValidationMessage, setSafAmountValidationMessage] =
+    useState("");
   const [safLimitValidationError, setSafLimitValidationError] = useState("");
-  const [safLimitValidationMessage, setSafLimitValidationMessage] = useState("");
+  const [safLimitValidationMessage, setSafLimitValidationMessage] =
+    useState("");
 
   const handleChangeRInterval = (e) => {
     setRIntervalValidationError(false);
@@ -210,14 +222,77 @@ const PageThree = ({
         setMaxoutValidationError(true);
         setMaxoutValidationMessage(error.message);
 
-        if (error.message === "Max Out is required") {
+        if (error.message === "Max Out Messages is required") {
           setMaxOutMessages(value);
         }
       });
   };
+  const handleChangeFullFileSize = (e) => {
+    setFullFileSizeValidationError(false);
 
+    const value = e.target.value;
+
+    validations.interfaceBinConfFileFullSize
+      .validate(value)
+      .then(() => {
+        setFullFileSize(value);
+        setFullFileSizeValidationError(false);
+        setFullFileSizeValidationMessage(null);
+      })
+      .catch((error) => {
+        setFullFileSizeValidationError(true);
+        setFullFileSizeValidationMessage(error.message);
+
+        if (error.message === "File Full Size is required") {
+          setFullFileSize(value);
+        }
+      });
+  };
+  const handleChangeSafAmount = (e) => {
+    setSafAmountValidationError(false);
+
+    const value = e.target.value;
+
+    validations.interfaceBinConfSAFAmount
+      .validate(value)
+      .then(() => {
+        setSafAmount(value);
+        setSafAmountValidationError(false);
+        setSafAmountValidationMessage(null);
+      })
+      .catch((error) => {
+        setSafAmount(value);
+        setSafAmountValidationError(true);
+        setSafAmountValidationMessage(error.message);
+
+        if (error.message === "SAF amount is required") {
+          setSafAmount(value);
+        }
+      });
+  };
+
+  const handleChangeSafLimit = (e) => {
+    setSafLimitValidationError(false);
+
+    const value = e.target.value;
+
+    validations.interfaceBinConfSAFLimit
+      .validate(value)
+      .then(() => {
+        setSafLimit(value);
+        setSafLimitValidationError(false);
+        setSafLimitValidationMessage(null);
+      })
+      .catch((error) => {
+        setSafLimitValidationError(true);
+        setSafLimitValidationMessage(error.message);
+
+        if (error.message === "SAF Limit is required") {
+          setSafLimit(value);
+        }
+      });
+  };
   
-
 
   return (
     <div className="Entries">
@@ -232,8 +307,8 @@ const PageThree = ({
             size="small"
             className="MuiTextField-root"
             value={resendInterval}
-              error={rIntervalValidationError}
-              helperText={rIntervalValidationMessage}
+            error={rIntervalValidationError}
+            helperText={rIntervalValidationMessage}
             onChange={handleChangeRInterval}
           />
         </div>
@@ -247,11 +322,9 @@ const PageThree = ({
             size="small"
             className="MuiTextField-root"
             value={fastInterval}
-            //   error={codeValidationError}
-            //   helperText={codeValidationMessage}
-            onChange={(e) => {
-              setFastInterval(e.target.value);
-            }}
+            error={fIntervalValidationError}
+            helperText={fIntervalValidationMessage}
+            onChange={handleChangeFInterval}
           />
         </div>
         <div className="row">
@@ -267,11 +340,9 @@ const PageThree = ({
             }}
             className="MuiTextField-root"
             value={slowInterval}
-            //   error={codeValidationError}
-            //   helperText={codeValidationMessage}
-            onChange={(e) => {
-              setSlowInterval(e.target.value);
-            }}
+            error={sIntervalValidationError}
+            helperText={sIntervalValidationMessage}
+            onChange={handleChangeSInterval}
           />
         </div>
         <div className="row">
@@ -287,11 +358,9 @@ const PageThree = ({
             }}
             className="MuiTextField-root"
             value={normalModePercentage}
-            //   error={codeValidationError}
-            //   helperText={codeValidationMessage}
-            onChange={(e) => {
-              setNormalModePercentage(e.target.value);
-            }}
+            error={nPercentageValidationError}
+            helperText={nPercentageValidationMessage}
+            onChange={handleChangeNPercentage}
           />
         </div>
         <div className="row">
@@ -307,11 +376,9 @@ const PageThree = ({
             }}
             className="MuiTextField-root"
             value={forwardModePercentage}
-            //   error={codeValidationError}
-            //   helperText={codeValidationMessage}
-            onChange={(e) => {
-              setForwardModePercentage(e.target.value);
-            }}
+            error={fPercentageValidationError}
+            helperText={fPercentageValidationMessage}
+            onChange={handleChangeFPercentage}
           />
         </div>
         <div className="row">
@@ -327,11 +394,9 @@ const PageThree = ({
             }}
             className="MuiTextField-root"
             value={maxOutMessages}
-            //   error={codeValidationError}
-            //   helperText={codeValidationMessage}
-            onChange={(e) => {
-              setMaxOutMessages(e.target.value);
-            }}
+            error={maxoutValidationError}
+            helperText={maxoutValidationMessage}
+            onChange={handleChangeMaxOut}
           />
         </div>
       </div>
@@ -350,11 +415,9 @@ const PageThree = ({
             }}
             className="MuiTextField-root"
             value={fullFileSize}
-            //   error={codeValidationError}
-            //   helperText={codeValidationMessage}
-            onChange={(e) => {
-              setFullFileSize(e.target.value);
-            }}
+            error={fullFileSizeValidationError}
+            helperText={fullFileSizeValidationMessage}
+            onChange={handleChangeFullFileSize}
           />
         </div>
         <div className="row">
@@ -367,11 +430,9 @@ const PageThree = ({
             size="small"
             className="MuiTextField-root"
             value={safAmount}
-            //   error={codeValidationError}
-            //   helperText={codeValidationMessage}
-            onChange={(e) => {
-              setSafAmount(e.target.value);
-            }}
+              error={safAmountValidationError}
+              helperText={safAmountValidationMessage}
+            onChange={handleChangeSafAmount}
           />
         </div>
         <div className="row">
@@ -384,11 +445,9 @@ const PageThree = ({
             size="small"
             className="MuiTextField-root"
             value={safLimit}
-            //   error={codeValidationError}
-            //   helperText={codeValidationMessage}
-            onChange={(e) => {
-              setSafLimit(e.target.value);
-            }}
+              error={safLimitValidationError}
+              helperText={safLimitValidationMessage}
+            onChange={handleChangeSafLimit}
           />
         </div>
 
@@ -402,11 +461,9 @@ const PageThree = ({
             size="small"
             className="MuiTextField-root"
             value={maxRetry}
-            //   error={codeValidationError}
-            //   helperText={codeValidationMessage}
-            onChange={(e) => {
-              setMaxRetry(e.target.value);
-            }}
+              error={maxRetryValidationError}
+              helperText={maxRetryValidationMessage}
+            onChange={handleChangeMaxRetry}
           />
         </div>
         <div className="row">

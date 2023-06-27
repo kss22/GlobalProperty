@@ -26,13 +26,14 @@ const ReportScreen = () => {
   const [toDatePicker, setToDatePicker] = useState(null);
   const [available, setAvailable] = useState(false);
 
-  const generateReport = () => {
-    var backendHtmlString = "";
+  const [backendHtmlString, setBackendHtmlString] = useState("");
 
+
+  const generateReport = () => {
     var reportObject =
       '{"reportName":"BackendLoggingReport.jrxml","reportFormat":"html"';
 
-    reportObject += ', "branchId":"' + branchId + '"';
+    reportObject += ', "branchId":"' + parseInt(branchId) + '"';
     reportObject +=
       ', "fromDate": "' +
       formatDate(fromDatePicker) +
@@ -54,12 +55,21 @@ const ReportScreen = () => {
       body: decodeURI(reportObject),
     })
       .then((response) => {
-        backendHtmlString = response.data.toString().split("</head>")[1];
-        document.getElementById("reportBody").innerHTML = backendHtmlString;
+        if (!response.ok) {
+          throw new Error("Report generation failed.");
+        }
+        return response.text();
+      })
+      .then((data) => {
+        const backendHtmlString = data.toString().split("</head>")[1];
         setAvailable(true);
+        setBackendHtmlString(backendHtmlString);
+        
       })
       .catch((error) => {
         console.log(error);
+        setAvailable(false);
+        setBackendHtmlString("");
       });
     return { __html: backendHtmlString };
   };
@@ -73,7 +83,7 @@ const ReportScreen = () => {
   }
 
   const formatDate = (date) => {
-    return dayjs(date).format("YY-MMM-DD"); // Format the date as desired
+    return dayjs(date).format("YY-MMM-DD"); 
   };
 
   useEffect(() => {
@@ -171,7 +181,7 @@ const ReportScreen = () => {
       <div>
         <div className="Header">
           <h2>Reports</h2>
-          <br/>
+          <br />
         </div>
         <div className="report-filters">
           <label className="required">
@@ -242,7 +252,7 @@ const ReportScreen = () => {
         }}
       >
         {available ? (
-          <div id="reportBody"></div>
+          <div dangerouslySetInnerHTML={{ __html: backendHtmlString }} />
         ) : (
           <Typography>No reports to display</Typography>
         )}
