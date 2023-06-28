@@ -13,6 +13,8 @@ import AcquirerScreen from "./pages/AcquirersScreen/acquirerScreen";
 import AcquirerInterfaceScreen from "./pages/AcquirerInterface/acquirerInterfaceScreen";
 import ReportScreen from "./pages/ReportsListScreen/reportsListScreen";
 import InterfaceBinScreen from "./pages/InterfaceBinScreen/interfaceBinScreen";
+import IssuerProfileScreen from "./pages/IssuerProfileScreen/issuerProfileScreen";
+import IssuerProfileEditScreen from "./pages/IssuerProfileScreen/issuerProfileEditScreen";
 
 
 function App() {
@@ -85,6 +87,22 @@ function App() {
             element={
               <IntlProvider locale={locale} messages={labels}>
                 <InterfaceBinScreen />
+              </IntlProvider>
+            }
+          />
+          <Route
+            path="/issuerProfile"
+            element={
+              <IntlProvider locale={locale} messages={labels}>
+                <IssuerProfileScreen />
+              </IntlProvider>
+            }
+          />
+          <Route
+            path="/issuerProfileEdit"
+            element={
+              <IntlProvider locale={locale} messages={labels}>
+                <IssuerProfileEditScreen />
               </IntlProvider>
             }
           />

@@ -1,85 +1,13 @@
 import { Button, Tooltip } from "@mui/material";
-import { saveLanguage } from "../../localStorage";
 import { FaPlus } from "react-icons/fa";
 import { FormattedMessage } from "react-intl";
 import EcomLayoutsTable from "../../components/EcomScreens/ecomLayoutDataTable";
+import NavBar from "../../components/navBar";
 
 const ListEcomLayout = () => {
   return (
     <div className="MainContainer">
-      <Tooltip title="Go to Global Properties">
-        <Button
-          onClick={() => {
-            window.location.href = "/listGlobalProperties";
-          }}
-          variant="text"
-        >
-          GlobalProperties
-        </Button>
-      </Tooltip>
-      <Tooltip title="Go to Acquirers">
-        <Button
-          onClick={() => {
-            window.location.href = "/listAcquirers";
-          }}
-          variant="text"
-        >
-          Acquirer
-        </Button>
-      </Tooltip>
-      <Tooltip title="Go to acquirer interfaces">
-        <Button
-          onClick={() => {
-            window.location.href = "/listAcquirerInterface";
-          }}
-          variant="text"
-        >
-          Acquirer Interfaces
-        </Button>
-      </Tooltip>
-      <Tooltip title="Go to interface bin">
-        <Button
-          onClick={() => {
-            window.location.href = "/interfaceBin";
-          }}
-          variant="text"
-        >
-          Interface Bin
-        </Button>
-      </Tooltip>
-      <Tooltip title="Go to reports">
-        <Button
-          onClick={() => {
-            window.location.href = "/reports";
-          }}
-          variant="text"
-        >
-          Reports
-        </Button>
-      </Tooltip>
-
-      <Tooltip title="French">
-        <Button
-          onClick={() => {
-            saveLanguage("fr");
-            window.location.reload();
-          }}
-          variant="text"
-        >
-          Fr
-        </Button>
-      </Tooltip>
-      <Tooltip title="English">
-        <Button
-          onClick={() => {
-            saveLanguage("en");
-            window.location.reload();
-          }}
-          variant="text"
-        >
-          En
-        </Button>
-      </Tooltip>
+      <NavBar/>
       <div>
         <div className="Header">
           <h2>

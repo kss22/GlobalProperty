@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import "../../App.css";
-import { saveLanguage } from "../../localStorage";
 import {
   Button,
   FormControl,
@@ -9,7 +8,6 @@ import {
   Paper,
   Select,
   TextField,
-  Tooltip,
   Typography,
 } from "@mui/material";
 
@@ -18,6 +16,7 @@ import { FormattedMessage } from "react-intl";
 import dayjs from "dayjs";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import NavBar from "../../components/navBar";
 
 const ReportScreen = () => {
   const [data, setData] = useState([]);
@@ -106,78 +105,7 @@ const ReportScreen = () => {
 
   return (
     <div className="MainContainer">
-      <Tooltip title="Go to ecom">
-        <Button
-          onClick={() => {
-            window.location.href = "/listEcomLayout";
-          }}
-          variant="text"
-        >
-          Ecom
-        </Button>
-      </Tooltip>
-      <Tooltip title="Go to global properties">
-        <Button
-          onClick={() => {
-            window.location.href = "/listGlobalProperties";
-          }}
-          variant="text"
-        >
-          Global Properties
-        </Button>
-      </Tooltip>
-      <Tooltip title="Go to acquirers">
-        <Button
-          onClick={() => {
-            window.location.href = "/listAcquirers";
-          }}
-          variant="text"
-        >
-          Acquirers
-        </Button>
-      </Tooltip>
-      <Tooltip title="Go to acquirer interfaces">
-        <Button
-          onClick={() => {
-            window.location.href = "/listAcquirerInterface";
-          }}
-          variant="text"
-        >
-          Acquirer Interfaces
-        </Button>
-      </Tooltip>
-      <Tooltip title="Go to interface bin">
-        <Button
-          onClick={() => {
-            window.location.href = "/interfaceBin";
-          }}
-          variant="text"
-        >
-          Interface Bin
-        </Button>
-      </Tooltip>
-      <Tooltip title="French">
-        <Button
-          onClick={() => {
-            saveLanguage("fr");
-            window.location.reload();
-          }}
-          variant="text"
-        >
-          Fr
-        </Button>
-      </Tooltip>
-      <Tooltip title="English">
-        <Button
-          onClick={() => {
-            saveLanguage("en");
-            window.location.reload();
-          }}
-          variant="text"
-        >
-          En
-        </Button>
-      </Tooltip>
+      <NavBar/>
       <div>
         <div className="Header">
           <h2>Reports</h2>

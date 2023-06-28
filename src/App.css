@@ -261,6 +261,7 @@ body{
 }
 
 .Submissions {
+  padding: 20px;
   margin-top: 20px;
   text-align:right;
 }
