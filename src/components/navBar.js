@@ -74,6 +74,16 @@ const NavBar = () => {
           Issuer Profile
         </Button>
       </Tooltip>
+      <Tooltip title="Go to range definition">
+        <Button
+          onClick={() => {
+            window.location.href = "/rangeDefinition";
+          }}
+          variant="text"
+        >
+          Range Definition
+        </Button>
+      </Tooltip>
       <Tooltip title="French">
         <Button
           onClick={() => {
@@ -96,6 +106,7 @@ const NavBar = () => {
           En
         </Button>
       </Tooltip>
+      
     </div>
   );
 };

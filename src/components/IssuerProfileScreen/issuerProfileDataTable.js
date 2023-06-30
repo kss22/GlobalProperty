@@ -244,7 +244,7 @@ import {
   const TableCellItemComponent = ({ item }) => {
 
     function handleDelete(value){
-      fetch(`${authentication.SERVER_URL}/v1/routing/iss-profile/`,{
+      fetch(`${authentication.SERVER_URL}/v1/routing/iss-profile`,{
           method:"Delete",
           headers:{
               Authorization: `Bearer ${authentication.token}`,
