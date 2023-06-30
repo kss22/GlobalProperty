@@ -99,7 +99,7 @@ function App() {
             }
           />
           <Route
-            path="/issuerProfileEdit"
+            path="/issuerProfileEdit/:itemProvided?"
             element={
               <IntlProvider locale={locale} messages={labels}>
                 <IssuerProfileEditScreen />

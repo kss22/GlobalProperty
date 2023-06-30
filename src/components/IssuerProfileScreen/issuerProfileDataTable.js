@@ -6,7 +6,6 @@ import {
     MenuItem,
     Paper,
     Select,
-    Switch,
     Table,
     TableBody,
     TableCell,
@@ -33,7 +32,7 @@ import {
     const [sortOrderByCardProduct, setSortOrderByCardProduct] = useState("asc");
     const [offset, setOffset] = useState(0);
     const [numOfRecords, setNumOfRecords] = useState(0);
-    const [pageSize, setPageSize] = useState(10);
+    const [pageSize, setPageSize] = useState("");
     const options = [];
   
     useEffect(() => {
@@ -54,6 +53,11 @@ import {
         .then((data) => {
           setData(data);
           setNumOfRecords(data.length);
+          if(data.length<5){
+            setPageSize(data.length);
+          }else{
+            setPageSize(5);
+          }
           console.log(data);
         })
         .finally(() => {
@@ -98,7 +102,7 @@ import {
       setSortOrderByCardProduct(sortOrderByCardProduct === "asc" ? "desc" : "asc");
     };
   
-    for (let i = 10; i <= numOfRecords; i += 10) {
+    for (let i = 5; i <= numOfRecords; i += 5) {
       options.push(i);
     }
   
@@ -169,7 +173,7 @@ import {
                         <TableCell>
                           Priority
                         </TableCell>
-                        <TableCell colSpan="3" className="actions-header">
+                        <TableCell colSpan="2" className="actions-header">
                           <FormattedMessage
                             id="actions-column"
                             defaultMessage="Actions"
@@ -180,12 +184,10 @@ import {
                     <TableBody>
                       {data
                         .slice(offset * pageSize, (offset + 1) * pageSize)
-                        .map((item) => (
+                        .map((item, index) => (
                           <TableCellItemComponent
-                            key={item.entityId}
                             item={item}
-                            // setAuthState={setAuthState}
-                            // setIdProvided={setIdProvided}
+                            key={index}
                           />
                         ))}
                     </TableBody>
@@ -222,10 +224,11 @@ import {
                     <Select
                       labelId="select-page-size"
                       label="Page Size"
+                      value={pageSize}
                       onChange={(e) => setPageSize(e.target.value)}
                     >
-                      {options.map((number) => (
-                        <MenuItem value={number}>{number}</MenuItem>
+                      {options.map((number, index) => (
+                        <MenuItem value={number} key={index}>{number}</MenuItem>
                       ))}
                     </Select>
                   </FormControl>
@@ -238,25 +241,18 @@ import {
     );
   };
   
-  const TableCellItemComponent = ({ item, providedId }) => {
-  
-    const [status, setStatus] = useState(0);
-//   useEffect(() => {
-//     if (item.status === "1") {
-//       setStatus(true);
-//     } else {
-//       setStatus(false);
-//     }
-//   }, [item]);
+  const TableCellItemComponent = ({ item }) => {
 
     function handleDelete(value){
-      fetch(`${authentication.SERVER_URL}/v1/routing/iss-profile/${value}`,{
+      fetch(`${authentication.SERVER_URL}/v1/routing/iss-profile/`,{
           method:"Delete",
           headers:{
               Authorization: `Bearer ${authentication.token}`,
               instId: "1",
               branchId: "1"
-          }
+          },
+          body: JSON.stringify(value),
+
       }).then((response) => {
           if (response.ok) {
             window.location.reload();
@@ -281,79 +277,14 @@ import {
           <TableCell>{item.hasPin}</TableCell>
           <TableCell>{item.issUserbinId}</TableCell>
           <TableCell>{item.issInstId}</TableCell>
-          <TableCell>
-          <Tooltip title="Enable/Disable" placement="right" arrow>
-            <Switch
-              checked={status}
-              onChange={(e) => {
-                setStatus(e.target.checked);
-                // const post = {
-                //   id: item.acquirerInterfaceId,
-                //   status: e.target.checked ? "1" : "0",
-                // };
-                // fetch(
-                //   `${authentication.SERVER_URL}/v1/routing/acquirer-interface/status-change`,
-                //   {
-                //     method: "POST",
-                //     headers: {
-                //       "Content-Type": "application/json",
-                //       Authorization: `Bearer ${authentication.token}`,
-                //       branchId: "1",
-                //       instId: "1",
-                //     },
-                //     body: JSON.stringify(post),
-                //   }
-                // )
-                //   .then((response) => {
-                //     if (response.ok) {
-                //       toast.success("Acquirer Interface Status changed successfully", {
-                //         position: "top-center",
-                //         autoClose: 5000,
-                //         hideProgressBar: false,
-                //         closeOnClick: true,
-                //         pauseOnHover: true,
-                //         progress: undefined,
-                //       });
-                //     }
-                //     return response.json();
-                //   })
-                //   .then((data) => {
-                //     if (data.errors !== null) {
-                //       const lengthOfErrors = data.errors.length;
-                //       for (let i = 0; i < lengthOfErrors; i++) {
-                //         toast.error(data.errors[i], {
-                //           position: "top-center",
-                //           autoClose: 5000,
-                //           hideProgressBar: false,
-                //           closeOnClick: true,
-                //           pauseOnHover: true,
-                //           progress: undefined,
-                //         });
-                //       }
-                //     }
-                //   })
-                //   .catch((err) => {
-                //     toast.error(err, {
-                //       position: "top-center",
-                //       autoClose: 5000,
-                //       hideProgressBar: false,
-                //       closeOnClick: true,
-                //       pauseOnHover: true,
-                //       progress: undefined,
-                //     });
-                //   });
-              }}
-            />
-          </Tooltip>
-          </TableCell>
+          
           <TableCell>
           <Tooltip title="Edit" placement="right" arrow>
             <Button
               className="edit-button"
               startIcon={<FaEdit />}
               onClick={() => {
-                // setAuthState(States.ACQUIRER_INTERFACE_CREATION);
-                // setIdProvided(item.acquirerInterfaceId);
+                window.location.href=`/issuerProfileEdit?item=${encodeURIComponent(JSON.stringify(item))}`
               }}
             />
           </Tooltip>
@@ -367,7 +298,7 @@ import {
                     "Are you sure you want to delete this issuer profile?"
                   );
                   if (result) {
-                    handleDelete(item.entityId);
+                    handleDelete(item);
   
                     window.location.reload();
                   } else {
