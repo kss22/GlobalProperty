@@ -17,6 +17,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { useLocation } from "react-router-dom";
 import Loading from "../loading";
 import Failed from "../failedComponent";
+import validations from "../../utils/validations";
 
 const RangeDefinitionForm = () => {
   const location = useLocation();
@@ -36,6 +37,105 @@ const RangeDefinitionForm = () => {
   const [failed, setFailed] = useState(false);
   const [state, setState] = useState(false);
 
+  const [lowBinValidationError, setLowBinValidationError] = useState(false);
+  const [lowBinValidationMessage, setLowBinValidationMessage] = useState("");
+  const [highBinValidationError, setHighBinValidationError] = useState(false);
+  const [highBinValidationMessage, setHighBinValidationMessage] = useState("");
+  const [destinationValidationError, setDestinationValidationError] = useState(false);
+  const [destinationValidationMessage, setDestinationValidationMessage] = useState("");
+  const [descriptionValidationError, setDescriptionValidationError] = useState(false);
+  const [descriptionValidationMessage, setDescriptionValidationMessage] = useState("");
+
+
+  const handleChangeDescription = (e) => {
+    setDescriptionValidationError(false);
+
+    const value = e.target.value;
+
+    validations.rangeDefinitionDescription
+      .validate(value)
+      .then(() => {
+        setDescription(value);
+        setDescriptionValidationError(false);
+        setDescriptionValidationMessage(null);
+      })
+      .catch((error) => {
+        setDescriptionValidationError(true);
+        setDescriptionValidationMessage(error.message);
+
+        if (error.message === "Description is required") {
+          setDescription(value);
+        }
+      });
+  };
+
+  
+  const handleChangeDestination = (e) => {
+    setDestinationValidationError(false);
+
+    const value = e.target.value;
+
+    validations.rangeDefinitionDestination
+      .validate(value)
+      .then(() => {
+        setDestination(value);
+        setDestinationValidationError(false);
+        setDestinationValidationMessage(null);
+      })
+      .catch((error) => {
+        setDestinationValidationError(true);
+        setDestinationValidationMessage(error.message);
+
+        if (error.message === "Destination is required") {
+          setDestination(value);
+        }
+      });
+  };
+
+  const handleChangeHighBin = (e) => {
+    setHighBinValidationError(false);
+
+    const value = e.target.value;
+
+    validations.rangeDefinitionHighBin
+      .validate(value)
+      .then(() => {
+        setHighbin(value);
+        setHighBinValidationError(false);
+        setHighBinValidationMessage(null);
+      })
+      .catch((error) => {
+        setHighBinValidationError(true);
+        setHighBinValidationMessage(error.message);
+
+        if (error.message === "High Bin is required") {
+          setHighbin(value);
+        }
+      });
+  };
+
+
+  const handleChangeLowBin = (e) => {
+    setLowBinValidationError(false);
+
+    const value = e.target.value;
+
+    validations.rangeDefinitionLowBin
+      .validate(value)
+      .then(() => {
+        setLowbin(value);
+        setLowBinValidationError(false);
+        setLowBinValidationMessage(null);
+      })
+      .catch((error) => {
+        setLowBinValidationError(true);
+        setLowBinValidationMessage(error.message);
+
+        if (error.message === "Low Bin is required") {
+          setLowbin(value);
+        }
+      });
+  };
   function handleSubmit() {
     const post = {
       cardproduct: cardType,
@@ -185,11 +285,9 @@ const RangeDefinitionForm = () => {
                         size="small"
                         className="MuiTextField-root"
                         value={lowbin}
-                        // error={cardNameValidationError}
-                        // helperText={cardNameValidationMessage}
-                        onChange={(e) => {
-                          setLowbin(e.target.value);
-                        }}
+                        error={lowBinValidationError}
+                        helperText={lowBinValidationMessage}
+                        onChange={handleChangeLowBin}
                       />
                     </div>
                     <div className="row">
@@ -202,12 +300,10 @@ const RangeDefinitionForm = () => {
                         size="small"
                         className="MuiTextField-root"
                         value={highbin}
-                        // error={cardNameValidationError}
-                        // helperText={cardNameValidationMessage}
-                        // onChange={handleChangeCardName}
-                        onChange={(e) => {
-                          setHighbin(e.target.value);
-                        }}
+                        error={highBinValidationError}
+                        helperText={highBinValidationMessage}
+                        onChange={handleChangeHighBin}
+                        
                       />
                     </div>
                     <div className="row">
@@ -238,11 +334,9 @@ const RangeDefinitionForm = () => {
                         size="small"
                         className="MuiTextField-root"
                         value={description}
-                        // error={cardNameValidationError}
-                        // helperText={cardNameValidationMessage}
-                        onChange={(e) => {
-                          setDescription(e.target.value);
-                        }}
+                        error={descriptionValidationError}
+                        helperText={descriptionValidationMessage}
+                        onChange={handleChangeDescription}
                       />
                     </div>
                   </div>
@@ -280,12 +374,10 @@ const RangeDefinitionForm = () => {
                         size="small"
                         className="MuiTextField-root"
                         value={destination}
-                        // error={cardNameValidationError}
-                        // helperText={cardNameValidationMessage}
-                        // onChange={handleChangeCardName}
-                        onChange={(e) => {
-                          setDestination(e.target.value);
-                        }}
+                        error={destinationValidationError}
+                        helperText={destinationValidationMessage}
+                        onChange={handleChangeDestination}
+                        
                       />
                     </div>
                     <div className="row">

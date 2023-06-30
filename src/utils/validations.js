@@ -16,6 +16,7 @@ const interfaceSiteIdRexExp = /^[0-9]+$/;
 const interfaceBinConfSAFAmountRegExp = /^(?:0|[1-9][0-9]*)\.[0-9]+$/;
 const interfaceBinConfSAFLimitRegExp = /^[0-9]+$/;
 const interfaceBinMailboxRegExp = /^[a-zA-Z0-9@.]+( [a-zA-Z0-9@.]+)*$/;
+const rangeDefinitionRegExp = /^[a-zA-Z0-9 ]+$/;
 
 const validations = {
   propertyValue: Yup.string()
@@ -214,6 +215,26 @@ const validations = {
     .required("Auth Server is required")
     .matches(ecomElementLengthRexExp, "Auth Server must be a numeric string")
     .max(30, "AuthServer length must be less than 30"),
+  rangeDefinitionLowBin: Yup.string()
+    .trim()
+    .required("Low Bin is required")
+    .matches(ecomElementLengthRexExp, "Low Bin must be a numeric string")
+    .max(15, "Low bin length must be less than 15"),
+  rangeDefinitionHighBin: Yup.string()
+    .trim()
+    .required("High Bin is required")
+    .matches(ecomElementLengthRexExp, "High Bin must be a numeric string")
+    .max(15, "High bin length must be less than 15"),
+  rangeDefinitionDestination: Yup.string()
+    .trim()
+    .required("Destination is required")
+    .matches(ecomElementLengthRexExp, "Destination must be a numeric string")
+    .max(10, "Destination length must be less than 10"),
+  rangeDefinitionDescription: Yup.string()
+    .trim()
+    .required("Description is required")
+    .matches(rangeDefinitionRegExp, "Description must be alphanumeric")
+    .max(50, "Description length must be less than 50"),
 };
 
 export default validations;
